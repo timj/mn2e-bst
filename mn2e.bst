@@ -26,7 +26,7 @@
 %%  Authors:
 %%     John P. Sleath (MRAO)
 %%     Tim Jenness (MRAO/JAC)
-%%     Norman Gray (Starlink)
+%%     Norman Gray (Glasgow University, Starlink) <norman@astro.gla.ac.uk>
 
 %%  Bugs:
 %%     Gives correct style for most entries (some of the more obscure
@@ -43,10 +43,12 @@
 %%        Extensively modified from astron.bst and apalike.bst
 %%     19 Jul 1995 (JPS/TJ):
 %%        First release (version 1.1b)
-%%     02 May 2001 (Norman Gray <norman@astro.gla.ac.uk>)
+%%     02 May 2001 (NG):
 %%        Limit the author lists to eight people.
 %%     19 Jun 2001 (TJ):
-%%        Fix inproceedings (version 1.2)
+%%        Fix inproceedings
+%%     30 Oct 2001 (NG):
+%%        Adjust author-limiting to conform to MN style (version 1.2)
 
 %%-
 
@@ -274,118 +276,235 @@ FUNCTION {emphasize}
 }
  
 INTEGERS { nameptr namesleft numnames }
- 
+
+%% Name formatting.  According to the MN instructions for authors,
+%% `In the references list [...] List all authors if eight or fewer,
+%% otherwise et al.'.  It's not clear (to NG) whether this means `If
+%% there are more than eight authors, list the first one plus et al.'
+%% or `If there are more than eight authors list the first eight plus
+%% et al.'  The functions format.names, format.names.full and
+%% format.ed.names immediately below implement the first of these
+%% (this opinion does seem more defensible in the context of the other 
+%% layout instructions); the commented-out functions below them
+%% implement the second.
 FUNCTION {format.names}
 { 's :=
-  #1 'nameptr :=
   s num.names$ 'numnames :=
-%  numnames 'namesleft :=
   numnames maxauthors >
-    { maxauthors 'namesleft := }
-    { numnames 'namesleft := }
-  if$
-    { namesleft #0 > }
-    { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=   % last name first
-      nameptr #1 >
-        { namesleft #1 >
-            { " " * t * }
-            { numnames #2 >
-                { "  " * }
-                'skip$
-              if$
-              t "others" =
-                { " et~al.," * }
+    { % Too many authors -- format as First author et al.
+      s #1 "{vv }{ll}{ jj}" format.name$  % last name first
+      " et~al.," *
+    }
+    { % maxauthors or fewer -- print them all
+      numnames 'namesleft :=
+      #1 'nameptr :=
+      { namesleft #0 > }
+        { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't := % last name 1st
+          nameptr #1 >
+            { namesleft #1 >
                 { " " * t * }
+                { numnames #2 >
+                    { "  " * }
+                    'skip$
+                  if$
+                  t "others" =
+                    { " et~al.," * }
+                    { " " * t * }
+                  if$
+                }
               if$
             }
+            't
           if$
+          nameptr #1 + 'nameptr :=
+          namesleft #1 - 'namesleft :=
         }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
+      while$
     }
-  while$
-  nameptr #1 - 'nameptr :=
-  numnames nameptr >	% trapped by maxauthors
-    { " et~al.," * }
-    'skip$
   if$
 }
- 
+
 FUNCTION {format.names.full}
 { 's :=
-  #1 'nameptr :=
   s num.names$ 'numnames :=
-%  numnames 'namesleft :=
   numnames maxauthors >
-    { maxauthors 'namesleft := }
-    { numnames 'namesleft := }
-  if$
-    { namesleft #0 > }
-    { s nameptr "{vv }{ll}{ jj}" format.name$ 't :=   % last name first
-      nameptr #1 >
-        {
-	  namesleft #1 >
-            { ", " * t * }
+    { % Too many authors -- format as First author et al.
+      s #1 "{vv }{ll}{ jj}" format.name$  % last name first
+      " et~al.," *
+    }
+    { % maxauthors or fewer -- print them all
+      numnames 'namesleft :=
+      #1 'nameptr :=
+      { namesleft #0 > }
+        { s nameptr "{vv }{ll}{ jj}" format.name$ 't :=   % last name first
+          nameptr #1 >
             {
-              t "others" =
-                { " et~al.," * }
-                { " \& " * t * }
+              namesleft #1 >
+                { ", " * t * }
+                {
+                  t "others" =
+                    { " et~al.," * }
+                    { " \& " * t * }
+                  if$
+                }
               if$
             }
+            't
           if$
+          nameptr #1 + 'nameptr :=
+          namesleft #1 - 'namesleft :=
         }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
+      while$
     }
-  while$
-  nameptr #1 - 'nameptr :=
-  numnames nameptr >	% trapped by maxauthors
-    { " et~al.," * }
-    'skip$
   if$
 }
 
 FUNCTION {format.ed.names}
 { 's :=
-  #1 'nameptr :=
   s num.names$ 'numnames :=
-%  numnames 'namesleft :=
   numnames maxauthors >
-    { maxauthors 'namesleft := }
-    { numnames 'namesleft := }
-  if$
-    { namesleft #0 > }
-    { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=
-      nameptr #1 >
-        { namesleft #1 >
-            { " " * t * }
-            { numnames #2 >
-                { " " * }
-                'skip$
-              if$
-              t "others" =
-                 { " et~al." * }
+    { % Too many authors -- format as First author et al.
+      s #1 "{vv }{ll}{ jj}" format.name$  % last name first
+      " et~al.," *
+    }
+    { % maxauthors or fewer -- print them all
+      numnames 'namesleft :=
+      #1 'nameptr :=
+      { namesleft #0 > }
+        { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=
+          nameptr #1 >
+            { namesleft #1 >
                 { " " * t * }
+                { numnames #2 >
+                    { " " * }
+                    'skip$
+                  if$
+                  t "others" =
+                     { " et~al." * }
+                    { " " * t * }
+                  if$
+                }
               if$
             }
+            't
           if$
+          nameptr #1 + 'nameptr :=
+          namesleft #1 - 'namesleft :=
         }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
+      while$
     }
-  while$
-  nameptr #1 - 'nameptr :=
-  numnames nameptr >	% trapped by maxauthors
-    { " et~al.," * }
-    'skip$
   if$
 }
+
+%% Alternative versions.  See comments above the earlier {format.names}.
+% FUNCTION {format.names}
+% { 's :=
+%   #1 'nameptr :=
+%   s num.names$ 'numnames :=
+%   numnames maxauthors >
+%     { maxauthors 'namesleft := }
+%     { numnames 'namesleft := }
+%   if$
+%     { namesleft #0 > }
+%     { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=   % last name first
+%       nameptr #1 >
+%         { namesleft #1 >
+%             { " " * t * }
+%             { numnames #2 >
+%                 { "  " * }
+%                 'skip$
+%               if$
+%               t "others" =
+%                 { " et~al.," * }
+%                 { " " * t * }
+%               if$
+%             }
+%           if$
+%         }
+%         't
+%       if$
+%       nameptr #1 + 'nameptr :=
+%       namesleft #1 - 'namesleft :=
+%     }
+%   while$
+%   nameptr #1 - 'nameptr :=
+%   numnames nameptr >	% trapped by maxauthors
+%     { " et~al.," * }
+%     'skip$
+%   if$
+% }
+
+% FUNCTION {format.names.full}
+% { 's :=
+%   #1 'nameptr :=
+%   s num.names$ 'numnames :=
+%   numnames maxauthors >
+%     { maxauthors 'namesleft := }
+%     { numnames 'namesleft := }
+%   if$
+%     { namesleft #0 > }
+%     { s nameptr "{vv }{ll}{ jj}" format.name$ 't :=   % last name first
+%       nameptr #1 >
+%         {
+% 	  namesleft #1 >
+%             { ", " * t * }
+%             {
+%               t "others" =
+%                 { " et~al.," * }
+%                 { " \& " * t * }
+%               if$
+%             }
+%           if$
+%         }
+%         't
+%       if$
+%       nameptr #1 + 'nameptr :=
+%       namesleft #1 - 'namesleft :=
+%     }
+%   while$
+%   nameptr #1 - 'nameptr :=
+%   numnames nameptr >	% trapped by maxauthors
+%     { " et~al.," * }
+%     'skip$
+%   if$
+% }
+
+% FUNCTION {format.ed.names}
+% { 's :=
+%   #1 'nameptr :=
+%   s num.names$ 'numnames :=
+%   numnames maxauthors >
+%     { maxauthors 'namesleft := }
+%     { numnames 'namesleft := }
+%   if$
+%     { namesleft #0 > }
+%     { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=
+%       nameptr #1 >
+%         { namesleft #1 >
+%             { " " * t * }
+%             { numnames #2 >
+%                 { " " * }
+%                 'skip$
+%               if$
+%               t "others" =
+%                  { " et~al." * }
+%                 { " " * t * }
+%               if$
+%             }
+%           if$
+%         }
+%         't
+%       if$
+%       nameptr #1 + 'nameptr :=
+%       namesleft #1 - 'namesleft :=
+%     }
+%   while$
+%   nameptr #1 - 'nameptr :=
+%   numnames nameptr >	% trapped by maxauthors
+%     { " et~al.," * }
+%     'skip$
+%   if$
+% }
 
 FUNCTION {format.authors}
 { author empty$
