@@ -1,19 +1,51 @@
-%%%%%  MN.BST  version 1.1b, 19/07/95
-%%%%%  John Sleath and Tim Jenness, MRAO, Cambridge
-%%
-%%     Bibliography style file for MNRAS.
-%%
-%%     Gives correct style for all entries (as far as known!).  However,
+%%+
+%%  Name:
+%%     mn2e.bst
+
+%%  Purpose:
+%%     BibTeX Bibliography style file for MNRAS
+
+%%  Invocation:
+%%     latex <latexfile>
+%%     bibtex <latexfile>
+%%     latex <latexfile>
+%%     latex <latexfile>
+
+%%  Description:
+%%     Provides a bibliography style that will allow bibtex to be
+%%     used when writing papers for MNRAS. This allows references
+%%     to be inserted automatically. For LaTeX2e we recommend that 
+%%     NatBIB is used to specify references. For latex2.09 you must
+%%     use \cite to give (Smith \& Jones 1995) or \shortcite to give the year
+%%     (in brackets) only.
+
+%%  Notes:
+%%     This file should be used in conjunction with the Monthly Notices
+%%     style/class (mn2e.cls or mn.sty) from Blackwell Scientific
+
+%%  Authors:
+%%     John P. Sleath (MRAO)
+%%     Tim Jenness (MRAO/JAC)
+
+%%  Bugs:
+%%     Gives correct style for most entries (some of the more obscure
+%%     have not been tested).  However,
 %%     the sorting of two- and three- author papers, with the same first
-%%     author does not (quite) conform to the correct style.
-%%
-%%     Use \cite to give (Smith \& Jones 1995) or \shortcite to give the year
-%%     (in brackets) only.  This file should be used in conjunction with
-%%     mn.sty (Blackwell Scientific).
-%%
-%%     Extensively modified from astron.bst and apalike.bst
+%%     author does not (quite) conform to the correct style. Additionally,
+%%     the author list is not truncated when more than 8 authors are on 
+%%     a single reference. In the text MN style forces 3 author papers
+%%     to fully list the authors first time the reference is mentioned. This
+%%     can not be done automatically. Use \cite*{} the first time.
 
+%%  History:
+%%     Summer 1995 (JPS/TJ):
+%%        Extensively modified from astron.bst and apalike.bst
+%%     19 Jul 1995 (JPS/TJ):
+%%        First release (version 1.1b)
+%%     19 Jun 2001 (TJ):
+%%        Fix inproceedings (version 1.2)
 
+%%-
 
 ENTRY
   { address
@@ -424,10 +456,10 @@ FUNCTION {either.or.check}
 FUNCTION {format.bvolume}
 { volume empty$
     { "" }
-    { "Vol." volume tie.or.space.connect
-      series empty$
+    { "" series tie.or.space.connect
+      volume empty$
         'skip$
-        { " of " * series * }
+        { " Vol. " * volume * }
       if$
       "volume and number" number either.or.check
     }
@@ -579,7 +611,11 @@ FUNCTION {format.in.ed.booktitle}
     { "" }
     { editor empty$
         { "in " booktitle * }
-        { "in " format.editors.extra * ", " * booktitle * }
+	{ format.bvolume empty$
+      		{ "in " format.editors.extra * ", " * booktitle * }
+        	{ "in " format.editors.extra * ", " * format.bvolume * ", " * booktitle * }
+		if$
+	}
       if$
     }
   if$
@@ -792,13 +828,15 @@ FUNCTION {inproceedings}
   author format.key output                              % special for
   output.year.check                                     % apalike
   crossref missing$
-    { format.in.ed.booktitle "booktitle" output.check
-      " " *
+    { 
+
+      format.in.ed.booktitle "booktitle" output.check
+      ". " *
+%      format.bvolume output
       before.all 'output.state :=
-%      new.block
-      format.bvolume output
-      format.number.series output
-      format.title "title" output.check
+      new.block
+%      format.title "title" output.check
+      format.number.series output      
       new.block
 %      organization output
       publisher output
