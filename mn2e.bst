@@ -26,14 +26,15 @@
 %%  Authors:
 %%     John P. Sleath (MRAO)
 %%     Tim Jenness (MRAO/JAC)
+%%     Norman Gray (Starlink)
 
 %%  Bugs:
 %%     Gives correct style for most entries (some of the more obscure
 %%     have not been tested).  However,
 %%     the sorting of two- and three- author papers, with the same first
-%%     author does not (quite) conform to the correct style. Additionally,
-%%     the author list is not truncated when more than 8 authors are on 
-%%     a single reference. In the text MN style forces 3 author papers
+%%     author does not (quite) conform to the correct style.
+%%
+%%     In the text MN style forces 3 author papers
 %%     to fully list the authors first time the reference is mentioned. This
 %%     can not be done automatically. Use \cite*{} the first time.
 
@@ -42,6 +43,8 @@
 %%        Extensively modified from astron.bst and apalike.bst
 %%     19 Jul 1995 (JPS/TJ):
 %%        First release (version 1.1b)
+%%     02 May 2001 (Norman Gray <norman@astro.gla.ac.uk>)
+%%        Limit the author lists to eight people.
 %%     19 Jun 2001 (TJ):
 %%        Fix inproceedings (version 1.2)
 
@@ -76,12 +79,19 @@ ENTRY
   { label extra.label sort.label }
  
 INTEGERS { output.state before.all mid.sentence after.sentence after.block }
- 
+
 FUNCTION {init.state.consts}
 { #0 'before.all :=
   #1 'mid.sentence :=
   #2 'after.sentence :=
   #3 'after.block :=
+}
+ 
+INTEGERS { maxauthors }
+
+FUNCTION {initialise.maxauthors}
+{
+  #8 'maxauthors :=
 }
  
 STRINGS { s t }
@@ -269,7 +279,11 @@ FUNCTION {format.names}
 { 's :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
-  numnames 'namesleft :=
+%  numnames 'namesleft :=
+  numnames maxauthors >
+    { maxauthors 'namesleft := }
+    { numnames 'namesleft := }
+  if$
     { namesleft #0 > }
     { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=   % last name first
       nameptr #1 >
@@ -292,18 +306,27 @@ FUNCTION {format.names}
       namesleft #1 - 'namesleft :=
     }
   while$
+  nameptr #1 - 'nameptr :=
+  numnames nameptr >	% trapped by maxauthors
+    { " et~al.," * }
+    'skip$
+  if$
 }
  
 FUNCTION {format.names.full}
 { 's :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
-  numnames 'namesleft :=
+%  numnames 'namesleft :=
+  numnames maxauthors >
+    { maxauthors 'namesleft := }
+    { numnames 'namesleft := }
+  if$
     { namesleft #0 > }
     { s nameptr "{vv }{ll}{ jj}" format.name$ 't :=   % last name first
       nameptr #1 >
         {
-          namesleft #1 >
+	  namesleft #1 >
             { ", " * t * }
             {
               t "others" =
@@ -319,13 +342,22 @@ FUNCTION {format.names.full}
       namesleft #1 - 'namesleft :=
     }
   while$
+  nameptr #1 - 'nameptr :=
+  numnames nameptr >	% trapped by maxauthors
+    { " et~al.," * }
+    'skip$
+  if$
 }
 
 FUNCTION {format.ed.names}
 { 's :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
-  numnames 'namesleft :=
+%  numnames 'namesleft :=
+  numnames maxauthors >
+    { maxauthors 'namesleft := }
+    { numnames 'namesleft := }
+  if$
     { namesleft #0 > }
     { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=
       nameptr #1 >
@@ -348,6 +380,11 @@ FUNCTION {format.ed.names}
       namesleft #1 - 'namesleft :=
     }
   while$
+  nameptr #1 - 'nameptr :=
+  numnames nameptr >	% trapped by maxauthors
+    { " et~al.," * }
+    'skip$
+  if$
 }
 
 FUNCTION {format.authors}
@@ -1219,6 +1256,8 @@ FUNCTION {presort}
   'sort.key$ :=
 }
  
+EXECUTE {initialise.maxauthors}
+ 
 ITERATE {presort}
  
 SORT            % by label, sort.label, title---for final label calculation
@@ -1255,7 +1294,7 @@ FUNCTION {reverse.pass}
 }
  
 EXECUTE {initialize.extra.label.stuff}
- 
+
 ITERATE {forward.pass}
  
 REVERSE {reverse.pass}
