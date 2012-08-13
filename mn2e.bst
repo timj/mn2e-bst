@@ -292,7 +292,7 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames maxauthors >
     { % Too many authors -- format as First author et al.
-      s #1 "{vv }{ll}{ jj}" format.name$  % last name first
+      s #1 "{vv }{ll}{ jj}{ f., }" format.name$  % last name first
       " et~al.," *
     }
     { % maxauthors or fewer -- print them all
@@ -364,7 +364,7 @@ FUNCTION {format.ed.names}
   s num.names$ 'numnames :=
   numnames maxauthors >
     { % Too many authors -- format as First author et al.
-      s #1 "{vv }{ll}{ jj}" format.name$  % last name first
+      s #1 "{vv }{ll}{ jj}{ f., }" format.name$  % last name first
       " et~al.," *
     }
     { % maxauthors or fewer -- print them all
