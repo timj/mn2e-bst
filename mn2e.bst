@@ -49,6 +49,8 @@
 %%        Fix inproceedings
 %%     30 Oct 2001 (NG):
 %%        Adjust author-limiting to conform to MN style (version 1.2)
+%%     22 Sep 2012 (Philip Hall):
+%%        Remove comma before et al when many authors.
 
 %%-
 
@@ -292,7 +294,7 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames maxauthors >
     { % Too many authors -- format as First author et al.
-      s #1 "{vv }{ll}{ jj}{ f., }" format.name$  % last name first
+      s #1 "{vv }{ll}{ jj}{ f. }" format.name$  % last name first
       " et~al.," *
     }
     { % maxauthors or fewer -- print them all
@@ -364,7 +366,7 @@ FUNCTION {format.ed.names}
   s num.names$ 'numnames :=
   numnames maxauthors >
     { % Too many authors -- format as First author et al.
-      s #1 "{vv }{ll}{ jj}{ f., }" format.name$  % last name first
+      s #1 "{vv }{ll}{ jj}{ f. }" format.name$  % last name first
       " et~al.," *
     }
     { % maxauthors or fewer -- print them all
