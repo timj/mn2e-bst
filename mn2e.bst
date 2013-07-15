@@ -22,6 +22,13 @@
 %%  Notes:
 %%     This file should be used in conjunction with the Monthly Notices
 %%     style/class (mn2e.cls or mn.sty) from Blackwell Scientific
+%%
+%%  Hyperlinks:
+%%     The eprint and doi bibtex fields can be over-ridden in your tex file.
+%%     One reason you might want to do this is to make them hyperlinks.
+%%     The commands to include for this are:
+%%     \newcommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}
+%%     \newcommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}
 
 %%  Authors:
 %%     John P. Sleath (MRAO)
@@ -51,11 +58,16 @@
 %%        Adjust author-limiting to conform to MN style (version 1.2)
 %%     22 Sep 2012 (Philip Hall):
 %%        Remove comma before et al when many authors.
-
+%%     01 July 2013 (Simeon Bird):
+%%        Ported Antony Lewis' hyperlinked arxiv entry additions across.
+%%        Originally modified for hyperlinked arxiv eprints by Antony Lewis April 2006
+%%
 %%-
 
 ENTRY
   { address
+    doi
+    eprint
     author
     booktitle
     chapter
@@ -142,6 +154,28 @@ FUNCTION {output.nonnull.extra}
   s
 }
 
+FUNCTION {output.nonnull.nocomma}
+{'s :=
+  output.state mid.sentence =
+    { write$ }
+    { output.state after.block =
+        { ". " *  write$
+          newline$
+%          "\newblock " write$
+        }
+        { output.state before.all =
+            'write$
+            { ", " * write$ }
+          if$
+        }
+      if$
+      mid.sentence 'output.state :=
+    }
+  if$
+  s
+}
+
+
 FUNCTION {output}
 { duplicate$ empty$
     'pop$
@@ -161,6 +195,15 @@ FUNCTION {output.check}
   duplicate$ empty$
     { pop$ "empty " t * " in " * cite$ * warning$ }
     'output.nonnull
+  if$
+}
+
+FUNCTION {output.check.nocomma}
+{ 't :=
+  duplicate$ empty$
+   % { pop$ "empty " t * " in " * cite$ * warning$ }
+     'pop$
+    'output.nonnull.nocomma
   if$
 }
 
@@ -553,6 +596,20 @@ FUNCTION {format.title}
   if$
 }
 
+FUNCTION {format.eprint}
+{ eprint empty$
+    { "" }
+    {  ", \eprint{" * eprint * "}" }
+    if$
+}
+
+FUNCTION {format.doi}
+{ doi empty$
+    { "" }
+    { ", \doi{" * doi * "}" }
+    if$
+}
+
 FUNCTION {n.dashify}
 { 't :=
   ""
@@ -882,6 +939,8 @@ FUNCTION {article}
       format.page output
     }
   if$
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -911,6 +970,8 @@ FUNCTION {book}
     }
       {format.book.crossref output.nonnull}
   if$
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -922,6 +983,8 @@ FUNCTION {booklet}
   format.btitle "title" output.check
   howpublished output
   address output
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -954,6 +1017,8 @@ FUNCTION {inbook}
       format.book.crossref output.nonnull
     }
   if$
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -977,6 +1042,8 @@ FUNCTION {incollection}
     }
   if$
   format.chapter.pages output
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -1005,6 +1072,8 @@ FUNCTION {inproceedings}
       format.pages output
     }
   if$
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -1021,6 +1090,8 @@ FUNCTION {manual}
   organization output
   address output
   format.edition output
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -1072,6 +1143,8 @@ FUNCTION {proceedings}
 %  organization output                           % a nonempty organization
   publisher output
   address output
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -1086,6 +1159,8 @@ FUNCTION {techreport}
   new.block
   institution "institution" output.check
   address output
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -1096,6 +1171,8 @@ FUNCTION {unpublished}
   output.year.check                                     % apalike
   format.btitle "title" output.check
   note "note" output.check
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -1448,7 +1525,12 @@ FUNCTION {begin.bib}
     'skip$
     { preamble$ write$ newline$ }
   if$
-  "\begin{thebibliography}{}" write$ newline$           % no labels in apalike
+  "\begin{thebibliography}{}"
+    write$ newline$           % no labels in apalike
+  "  \providecommand{\doi}[1]{doi:#1}"
+    write$ newline$
+  "  \providecommand{\eprint}[1]{arXiv:#1}"
+    write$ newline$
 }
 
 EXECUTE {begin.bib}
