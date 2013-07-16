@@ -24,11 +24,8 @@
 %%     style/class (mn2e.cls or mn.sty) from Blackwell Scientific
 %%
 %%  Hyperlinks:
-%%     The eprint and doi bibtex fields can be over-ridden in your tex file.
-%%     One reason you might want to do this is to make them hyperlinks.
-%%     The commands to include for this are:
-%%     \newcommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}
-%%     \newcommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}
+%%     To make the eprint and doi bibtex fields hyperlinks, you need
+%%     to have \usepackage{hyperref} in your latex preamble.
 
 %%  Authors:
 %%     John P. Sleath (MRAO)
@@ -1527,9 +1524,11 @@ FUNCTION {begin.bib}
   if$
   "\begin{thebibliography}{}"
     write$ newline$           % no labels in apalike
-  "  \providecommand{\doi}[1]{doi:#1}"
+  " \providecommand{\href}[2]{#2} "
     write$ newline$
-  "  \providecommand{\eprint}[1]{arXiv:#1}"
+  "  \providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}"
+    write$ newline$
+  "  \providecommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}"
     write$ newline$
 }
 
