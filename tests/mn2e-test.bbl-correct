@@ -1,0 +1,66 @@
+\begin{thebibliography}{}
+ \providecommand{\href}[2]{#2}
+  \providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}
+  \providecommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}
+
+\bibitem[\protect\citeauthoryear{One}{One}{2001}]{one}
+One A.,  2001, MNRAS
+
+\bibitem[\protect\citeauthoryear{One et~al.,}{One  et~al.}{2001}]{oneplus}
+One A.,  et~al., 2001, MNRAS
+
+\bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001a}]{two}
+One A.,  Two B.,  2001a, MNRAS
+
+\bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001b}]{twobis}
+One A.,  Two B.,  2001b, MNRAS
+
+\bibitem[\protect\citeauthoryear{One, Two et~al.,}{One et~al.}{2001}]{twoplus}
+One A.,  Two B.,    et~al., 2001, MNRAS
+
+\bibitem[\protect\citeauthoryear{One, Two \& Three}{One et~al.}{2001}]{three}
+One A.,  Two B.,    Three C.,  2001, MNRAS
+
+\bibitem[\protect\citeauthoryear{One, Two, Three et~al.,}{One
+  et~al.}{2001}]{threeplus}
+One A.,  Two B.,  Three C.,    et~al., 2001, MNRAS
+
+\bibitem[\protect\citeauthoryear{One, Two, Three \& Four}{One
+  et~al.}{2001}]{four}
+One A.,  Two B.,  Three C.,    Four D.,  2001, MNRAS
+
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four et~al.,}{One
+  et~al.}{2001}]{fourplus}
+One A.,  Two B.,  Three C.,  Four D.,    et~al., 2001, MNRAS
+
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six \& Seven}{One
+  et~al.}{2001}]{seven}
+One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,    Seven G.,  2001,
+  MNRAS
+
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six, Seven \&
+  Eight}{One et~al.}{2001}]{eight}
+One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,  Seven G.,    Eight
+  H.,  2001, MNRAS
+
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001a}]{eightplus}
+One A.  et~al., 2001a, MNRAS
+
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001b}]{nine}
+One A.  et~al., 2001b, MNRAS
+
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001c}]{nineplus}
+One A.  et~al., 2001c, MNRAS
+
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001d}]{ten}
+One A.  et~al., 2001d, MNRAS
+
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001e}]{tenplus}
+One A.  et~al., 2001e, MNRAS
+
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six, Seven
+  et~al.,}{One et~al.}{2001}]{sevenplus}
+One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,  Seven G.,    et~al.,
+  2001, MNRAS
+
+\end{thebibliography}
