@@ -33,14 +33,14 @@
 %%     Norman Gray (Glasgow University, Starlink) <norman@astro.gla.ac.uk>
 
 %%  Bugs:
-%%     Gives correct style for most entries (some of the more obscure
-%%     have not been tested).  However,
-%%     the sorting of two- and three- author papers, with the same first
-%%     author does not (quite) conform to the correct style.
+%%     The formatting has been compared to the MN style, and is
+%%     believed to be compatible with it.  However this comparison has
+%%     (for obvious reasons) been done most carefully for articles, so
+%%     there may be deviations from it for other entry types.
 %%
 %%     In the text MN style forces 3 author papers
 %%     to fully list the authors first time the reference is mentioned. This
-%%     can not be done automatically. Use \cite*{} the first time.
+%%     cannot be done automatically. Use \cite*{} the first time.
 
 %%  History:
 %%     Summer 1995 (JPS/TJ):
@@ -58,6 +58,9 @@
 %%     01 July 2013 (Simeon Bird):
 %%        Ported Antony Lewis' hyperlinked arxiv entry additions across.
 %%        Originally modified for hyperlinked arxiv eprints by Antony Lewis April 2006
+%%     August 2013 (NG):
+%%        Fixed a/b/c... year suffixes -- these now appear in the
+%%        correct order.
 %%
 %%-
 
@@ -89,7 +92,8 @@ ENTRY
     url
   }
   {}
-  { label extra.label sort.label }
+  { label extra.label sort.label presort.key }
+
 
 INTEGERS { output.state before.all mid.sentence after.sentence after.block }
 
@@ -100,11 +104,36 @@ FUNCTION {init.state.consts}
   #3 'after.block :=
 }
 
-INTEGERS { maxauthors }
+% If threeauthorhack is in initialise.mn2e, then the bibitem for a
+% three-author reference is generated using a \mniiiauthor command.
+% This command should be defined as follows:
+%
+%    \makeatletter
+%    \def\mniiiauthor#1#2#3{%
+%      \expandafter\ifx\csname mniiiauth@#1\endcsname\relax
+%        \global\expandafter\def\csname mniiiauth@#1\endcsname{X}#2%
+%      \else
+%        #3%
+%      \fi}
+%    \makeatletter
+%
+% The effect of this is that the first time that \mniiiauthor{X}{a}{b}
+% is evaluated, it expands to 'a', and it thereafter expands to 'b'.
+% This implements the MN style guide stipulation that "For three
+% authors, give all three names at first mention, e.g. (Brown, Jones &
+% Smith 1994), but use first author et al. (in roman, not italic)
+% thereafter, e.g. (Brown et al. 1994)."
+%
+% The above definition consumes a command for each such author.  It's
+% surely possible to avoid this (with some constructions involving
+% {\\#1}; see Appendix D cleverness), but that would verge on the
+% arcane, and not be really worth it.
+INTEGERS { maxauthors threeauthorhack }
 
-FUNCTION {initialise.maxauthors}
+FUNCTION {initialise.mn2e}
 {
   #8 'maxauthors :=
+  #0 'threeauthorhack :=
 }
 
 STRINGS { s t }
@@ -241,6 +270,8 @@ FUNCTION {output.bibitem}
   "]{" write$
   cite$ write$
   "}" write$
+  % debugging: define eg \def\logsortkey#1{{[\tiny #1]}} to see this
+  %"\logsortkey{" presort.key * "/" * sort.key$ * "}" * write$
   newline$
   ""
   before.all 'output.state :=
@@ -911,7 +942,7 @@ FUNCTION {format.book.crossref}
     { "empty volume in " cite$ * "'s crossref of " * crossref * warning$
       "in "
     }
-    { "Vol.\" volume tie.or.space.connect
+    { "Vol." volume tie.or.space.connect
       " of " *
     }
   if$
@@ -1230,7 +1261,7 @@ FUNCTION {format.lab.names}
     { #2 <
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-            { "  et~al." * }
+            { " et~al." * }
             { " \& " * s #2 "{vv~}{ll}" format.name$ * }
           if$
         }
@@ -1308,8 +1339,11 @@ FUNCTION {editor.key.label}
   if$
 }
 
+% Calculate the 'label' for the entry, which is used for sorting.
+% Note that this does not include the a/b/c... for disambiguating
+% years (that's added later, in forward.pass).
 FUNCTION {calc.label}
-{
+{ % Define t: this is the 'full' set of names
   type$ "book" =
   type$ "inbook" =
   or
@@ -1320,8 +1354,9 @@ FUNCTION {calc.label}
       if$
     }
   if$
-  "\protect\citeauthoryear{" swap$ * "}{"                 % these three lines are
-  *                                                     % for apalike, which
+  't :=
+  % Define s: this is the 'shortened' set of names, with 'et al.',
+  % which are to appear in citations
   type$ "book" =
   type$ "inbook" =
   or
@@ -1332,9 +1367,21 @@ FUNCTION {calc.label}
       if$
     }
   if$
-  * "}{" *
-  year field.or.null purify$ #-1 #4 substring$          % uses all four digits
-  *                       % the matching closing "}" comes in at the reverse.pass
+  's :=
+  % the '\protect... is for apalike
+  "\protect\citeauthoryear{" t * "}{" *
+  threeauthorhack
+  numnames #3 =
+  and
+    { "\protect\mniiiauthor{" cite$ * "}{" *
+      t * "}{" * s * "}" * }
+    { s }
+  if$
+  *
+  "}{" *
+  year field.or.null purify$ #-1 #4 substring$  % use all four digits
+  *
+  % the matching closing "}" comes in at the reverse.pass
   'label :=
 }
 
@@ -1355,7 +1402,7 @@ FUNCTION {sort.format.names}
           'skip$
       if$
       nameptr numnames = t "others" = and
-       { "et al." * }
+       { " et~al." * }
         { t sortify * }
       if$
       nameptr #1 + 'nameptr :=
@@ -1418,67 +1465,112 @@ FUNCTION {editor.sort}
   if$
 }
 
-%                       apalike uses two sorting passes; the first one sets the
-%                       labels so that the `a's, `b's, etc. can be computed;
-%                       the second pass puts the references in "correct" order.
-%                       The presort function is for the first pass. It computes
-%                       label, sort.label, and title, and then concatenates.
+% Format numbers (eg volume, number, pages) into a fixed-width string,
+% for sorting.
+FUNCTION {number.for.presort}
+{ field.or.null
+  duplicate$ text.length$ 'len :=
+  ""
+  { #5 len > }
+    { "0" *
+      len #1 + 'len := }
+  while$
+  swap$ *
+}
+
+% apalike uses two sorting passes; the first one sets the
+% labels so that the `a's, `b's, etc. can be computed;
+% the second pass puts the references in "correct" order.
+% The presort function is for the first pass. It computes
+% presort.key, sort.label, and sort.key$
 FUNCTION {presort}
 { calc.label
-  label sortify
-  "    "
-  *
   type$ "book" =
   type$ "inbook" =
   or
-    'author.editor.sort
+    'author.editor.key.label
     { type$ "proceedings" =
-        'editor.sort
-        'author.sort
+        'editor.key.label                       % apalike ignores organization
+        'author.key.label                       % for labeling and sorting
       if$
     }
   if$
-  #1 entry.max$ substring$      % for
-  'sort.label :=                % apalike
-  sort.label                    % style
-  *
   "    "
   *
-  title field.or.null
-  sort.format.title
+  #1 entry.max$ substring$
+  'presort.key :=
+  presort.key
+  "    "
   *
+  % Style apalike prefers 'title field.or.null sort.format.title *' here.
+  % We don't, because we will predominantly be sorting articles in
+  % this style, and we don't include their titles in the final bibliography.
+  volume number.for.presort *
+  number number.for.presort *
+  pages empty$
+    { "0" }
+    { pages first.page.number }
+  if$
+  number.for.presort *
   #1 entry.max$ substring$
   'sort.key$ :=
+  sort.key$ 'sort.label :=
 }
-
-EXECUTE {initialise.maxauthors}
+  
+EXECUTE {initialise.mn2e}
 
 ITERATE {presort}
 
 SORT            % by label, sort.label, title---for final label calculation
 
-STRINGS { last.label next.extra }       % apalike labels are only for the text;
+% Manage the construction of the 'extra' labels for references.  These
+% are the a/b/c/... year suffixes which distinguish different
+% publications by the same author.
+%
+% These apalike labels are only for the text; the 'label' does not
+% appear in the bibiliography, so that the 'longest.label' variable is
+% unnecessary in this style.
+STRINGS { last.key next.extra }
 
-INTEGERS { last.extra.num }             % there are none in the bibliography
+INTEGERS { last.extra.num }
 
-FUNCTION {initialize.extra.label.stuff} % and hence there is no `longest.label'
-{ #0 int.to.chr$ 'last.label :=
+FUNCTION {initialize.extra.label.stuff}
+{ #0 int.to.chr$ 'last.key :=
   "" 'next.extra :=
   #0 'last.extra.num :=
 }
 
+% By the time that this function is iterated over, the entries have
+% had presort.key assigned, and have been presorted.  However these labels
+% do not (by design) respect the presence of multiple entries in the
+% same year, so that there are duplicates.  Detect successive
+% duplicates, and add an extra a/b/c... suffix.
+%
+% At the end of this forward.pass, each entry with a duplicate presort.key
+% will have an extra.label, starting with 'b' for the first duplicate,
+% 'c' for the second, and so on.  That is, only the first
+% soon-to-be-discovered-to-be-duplicate label will not have an
+% extra.label.
 FUNCTION {forward.pass}
-{ last.label label =
+{ last.key presort.key =
     { last.extra.num #1 + 'last.extra.num :=
       last.extra.num int.to.chr$ 'extra.label :=
     }
-    { "a" chr.to.int$ 'last.extra.num :=
+    { % first time we've seen this key
+      "a" chr.to.int$ 'last.extra.num :=
       "" 'extra.label :=
-      label 'last.label :=
+      presort.key 'last.key :=
     }
   if$
 }
 
+% Work back through the labels.  If, on this pass we discover that the
+% next entry in the sequence (which is the last entry processed in
+% this reverse pass) had an extra.label of 'b', then this tells us
+% that _this_ entry should have an extra.label of 'a', which we were
+% unable to detect in the forward.pass above.
+%
+% We also close the brace pair {...} opened in calc.label
 FUNCTION {reverse.pass}
 { next.extra "b" =
     { "a" 'extra.label := }
@@ -1494,9 +1586,11 @@ ITERATE {forward.pass}
 
 REVERSE {reverse.pass}
 
-%                               Now that the label is right we sort for real,
-%                               on sort.label then year then title.  This is
-%                               for the second sorting pass.
+% Now that the label is right we sort for real.  We sort on sort.label
+% then year then title.  Since sort.label starts with presort.key,
+% this sorting is compatible with the letter suffixes added to years.
+%
+% This is for the second sorting pass.
 FUNCTION {bib.sort.order}
 { sort.label
   "    "

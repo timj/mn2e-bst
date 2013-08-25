@@ -1,0 +1,113 @@
+% mn2e-example.tex
+%
+% This is a skeleton MN-format article which displays the generated
+% test bibliography (mn2e-test.bbl) as it would appear in an article.
+% To see this, try:
+%
+%     make mn2e-example.pdf
+%
+% Note that the mn2e-test.aux file is written by hand; the
+% mn2e-example.aux file generated from this file is ignored.
+
+\documentclass[useAMS,usenatbib]{mn2e}
+
+\title[Illustrations of Citations]{Illustrations of Citations}
+\author[Albert One and Benedict Two]{Albert One$^{1}$\thanks{E-mail:
+ao@example.ac.uk (AO)} and Benedict Two$^{2}$\\
+$^{1}$A Place, Somewhere\\
+$^{2}$Elsewhere, On Earth}
+\begin{document}
+
+% The following implements the three-author-hack described in
+% mn2e.bst.  This should be moved to mn2e.cls at some point.
+%
+% This consumes a command for each such author.  It's surely possible
+% to avoid this (with some constructions involving {\\#1}; see
+% Appendix D cleverness), but that would verge on the arcane, and not
+% be really worth it.
+\makeatletter
+\def\mniiiauthor#1#2#3{%
+  \expandafter\ifx\csname mniiiauth@#1\endcsname\relax
+    \global\expandafter\def\csname mniiiauth@#1\endcsname{X}#2%
+  \else
+    #3%
+  \fi}
+\makeatletter
+
+\date{Whenever}
+
+\pagerange{\pageref{firstpage}--\pageref{lastpage}} \pubyear{2002}
+
+\maketitle
+
+\label{firstpage}
+
+\begin{abstract}
+Stuff.
+\end{abstract}
+
+\begin{keywords}
+keywords
+\end{keywords}
+
+\section{Introduction}
+
+There are numerous citations here.
+
+In particular, there is
+`one'~\citep{one},
+`oneplus'~\citep{oneplus},
+`two'~\citep{two},
+`twoplus'~\citep{twoplus},
+`twobis'~\citep{twobis},
+`twobook'~\citep{twobook},
+`twomisc~\citep{twomisc},
+`three'~\citep{three},
+`threeplus'~\citep{threeplus},
+`four'~\citep{four},
+`fourplus'~\citep{fourplus},
+`seven'~\citep{seven},
+`sevenplus'~\citep{sevenplus},
+`eight'~\citep{eight},
+`eightplus'~\citep{eightplus},
+`nine'~\citep{nine},
+`nineplus'~\citep{nineplus},
+`ten'~\citep{ten},
+`tenplus'~\citep{tenplus} and
+`tenbis'~\citep{tenbis}.
+
+On a second mention, there is
+`one'~\citep{one},
+`oneplus'~\citep{oneplus},
+`two'~\citep{two},
+`twoplus'~\citep{twoplus},
+`twobis'~\citep{twobis},
+`twobook'~\citep{twobook},
+`twomisc~\citep{twomisc},
+`three'~\citep{three},
+`threeplus'~\citep{threeplus},
+`four'~\citep{four},
+`fourplus'~\citep{fourplus},
+`seven'~\citep{seven},
+`sevenplus'~\citep{sevenplus},
+`eight'~\citep{eight},
+`eightplus'~\citep{eightplus},
+`nine'~\citep{nine},
+`nineplus'~\citep{nineplus},
+`ten'~\citep{ten},
+`tenplus'~\citep{tenplus} and
+`tenbis'~\citep{tenbis}.
+
+
+
+% ../mn2e.bst can generate a \logsortkey in the output, for
+% debugging.  That's generally commented out, but if you need to
+% uncomment that, then uncomment this, too.
+%\def\logsortkey#1{{[\tiny #1]}}
+\input{mn2e-test.bbl}
+
+\bsp
+
+\label{lastpage}
+
+\end{document}
