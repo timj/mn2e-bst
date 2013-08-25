@@ -104,11 +104,36 @@ FUNCTION {init.state.consts}
   #3 'after.block :=
 }
 
-INTEGERS { maxauthors }
+% If threeauthorhack is in initialise.mn2e, then the bibitem for a
+% three-author reference is generated using a \mniiiauthor command.
+% This command should be defined as follows:
+%
+%    \makeatletter
+%    \def\mniiiauthor#1#2#3{%
+%      \expandafter\ifx\csname mniiiauth@#1\endcsname\relax
+%        \global\expandafter\def\csname mniiiauth@#1\endcsname{X}#2%
+%      \else
+%        #3%
+%      \fi}
+%    \makeatletter
+%
+% The effect of this is that the first time that \mniiiauthor{X}{a}{b}
+% is evaluated, it expands to 'a', and it thereafter expands to 'b'.
+% This implements the MN style guide stipulation that "For three
+% authors, give all three names at first mention, e.g. (Brown, Jones &
+% Smith 1994), but use first author et al. (in roman, not italic)
+% thereafter, e.g. (Brown et al. 1994)."
+%
+% The above definition consumes a command for each such author.  It's
+% surely possible to avoid this (with some constructions involving
+% {\\#1}; see Appendix D cleverness), but that would verge on the
+% arcane, and not be really worth it.
+INTEGERS { maxauthors threeauthorhack }
 
-FUNCTION {initialise.maxauthors}
+FUNCTION {initialise.mn2e}
 {
   #8 'maxauthors :=
+  #0 'threeauthorhack :=
 }
 
 STRINGS { s t }
@@ -1318,7 +1343,7 @@ FUNCTION {editor.key.label}
 % Note that this does not include the a/b/c... for disambiguating
 % years (that's added later, in forward.pass).
 FUNCTION {calc.label}
-{
+{ % Define t: this is the 'full' set of names
   type$ "book" =
   type$ "inbook" =
   or
@@ -1329,9 +1354,9 @@ FUNCTION {calc.label}
       if$
     }
   if$
-  % the '\protect... is for apalike
-  "\protect\citeauthoryear{" swap$ * "}{"
-  *
+  't :=
+  % Define s: this is the 'shortened' set of names, with 'et al.',
+  % which are to appear in citations
   type$ "book" =
   type$ "inbook" =
   or
@@ -1342,9 +1367,21 @@ FUNCTION {calc.label}
       if$
     }
   if$
-  * "}{" *
+  's :=
+  % the '\protect... is for apalike
+  "\protect\citeauthoryear{" t * "}{" *
+  threeauthorhack
+  numnames #3 =
+  and
+    { "\protect\mniiiauthor{" cite$ * "}{" *
+      t * "}{" * s * "}" * }
+    { s }
+  if$
+  *
+  "}{" *
   year field.or.null purify$ #-1 #4 substring$  % use all four digits
-  * % the matching closing "}" comes in at the reverse.pass
+  *
+  % the matching closing "}" comes in at the reverse.pass
   'label :=
 }
 
@@ -1480,7 +1517,7 @@ FUNCTION {presort}
   sort.key$ 'sort.label :=
 }
   
-EXECUTE {initialise.maxauthors}
+EXECUTE {initialise.mn2e}
 
 ITERATE {presort}
 

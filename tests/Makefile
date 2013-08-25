@@ -3,7 +3,7 @@ check: mn2e-test.bbl mn2e-test.bbl-correct
 	  && echo OK \
 	  || { echo FAIL; cat mn2e-test.diff; }
 
-mn2e-test.bbl: mn2e-test.aux ../mn2e.bst
+mn2e-test.bbl: mn2e-test.aux mn2e-test.bib ../mn2e.bst
 	bibtex mn2e-test
 
 mn2e-example.pdf: mn2e-example.tex mn2e-test.bbl

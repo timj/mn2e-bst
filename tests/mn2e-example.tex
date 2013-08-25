@@ -18,6 +18,22 @@ $^{1}$A Place, Somewhere\\
 $^{2}$Elsewhere, On Earth}
 \begin{document}
 
+% The following implements the three-author-hack described in
+% mn2e.bst.  This should be moved to mn2e.cls at some point.
+%
+% This consumes a command for each such author.  It's surely possible
+% to avoid this (with some constructions involving {\\#1}; see
+% Appendix D cleverness), but that would verge on the arcane, and not
+% be really worth it.
+\makeatletter
+\def\mniiiauthor#1#2#3{%
+  \expandafter\ifx\csname mniiiauth@#1\endcsname\relax
+    \global\expandafter\def\csname mniiiauth@#1\endcsname{X}#2%
+  \else
+    #3%
+  \fi}
+\makeatletter
+
 \date{Whenever}
 
 \pagerange{\pageref{firstpage}--\pageref{lastpage}} \pubyear{2002}
