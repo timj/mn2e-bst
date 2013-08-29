@@ -62,6 +62,9 @@
 %%        Fixed a/b/c... year suffixes -- these now appear in the
 %%        correct order.
 %%
+%%  Revision:
+%%     $Id$
+%%
 %%-
 
 ENTRY
