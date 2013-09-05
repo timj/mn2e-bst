@@ -122,18 +122,14 @@ FUNCTION {init.state.consts}
   #3 'after.block :=
 }
 
-% If threeauthorhack is in initialise.mn2e, then the bibitem for a
+% If threeauthorvar is set to #1 in initialise.mn2e, then the bibitem for a
 % three-author reference is generated using a \mniiiauthor command.
-% This command should be defined as follows:
+% This command should be defined in the .cls file as follows:
 %
-%    \makeatletter
 %    \def\mniiiauthor#1#2#3{%
-%      \expandafter\ifx\csname mniiiauth@#1\endcsname\relax
-%        \global\expandafter\def\csname mniiiauth@#1\endcsname{X}#2%
-%      \else
-%        #3%
-%      \fi}
-%    \makeatletter
+%      \@ifundefined{mniiiauth@#1}
+%        {\global\expandafter\let\csname mniiiauth@#1\endcsname\null #2}
+%        {#3}}
 %
 % The effect of this is that the first time that \mniiiauthor{X}{a}{b}
 % is evaluated, it expands to 'a', and it thereafter expands to 'b'.
@@ -146,12 +142,12 @@ FUNCTION {init.state.consts}
 % surely possible to avoid this (with some constructions involving
 % {\\#1}; see Appendix D cleverness), but that would verge on the
 % arcane, and not be really worth it.
-INTEGERS { maxauthors threeauthorhack }
+INTEGERS { maxauthors threeauthorvar }
 
 FUNCTION {initialise.mn2e}
 {
   #8 'maxauthors :=
-  #0 'threeauthorhack :=
+  #1 'threeauthorvar :=
 }
 
 STRINGS { s t }
@@ -269,6 +265,7 @@ FUNCTION {output.year.check}
   if$
 }
 
+% Redundant?  See discussion in {misc}, below.
 FUNCTION {output.year.misc.check}
 { year empty$
     { "empty year in " cite$ * warning$ }
@@ -368,16 +365,11 @@ FUNCTION {emphasize}
 
 INTEGERS { nameptr namesleft numnames }
 
-%% Name formatting.  According to the MN instructions for authors,
-%% `In the references list [...] List all authors if eight or fewer,
-%% otherwise et al.'.  It's not clear (to NG) whether this means `If
-%% there are more than eight authors, list the first one plus et al.'
-%% or `If there are more than eight authors list the first eight plus
-%% et al.'  The functions format.names, format.names.full and
-%% format.ed.names immediately below implement the first of these
-%% (this opinion does seem more defensible in the context of the other
-%% layout instructions); the commented-out functions below them
-%% implement the second.
+%% Name formatting.  According to the MN instructions for authors, `In
+%% the references list [...] List all authors if eight or fewer,
+%% otherwise et al.'.  This means (according to a ruling from the MN
+%% editors) that if there are eight or more authors, they should be
+%% listed as "first one plus et al."
 FUNCTION {format.names}
 { 's :=
   s num.names$ 'numnames :=
@@ -390,7 +382,7 @@ FUNCTION {format.names}
       numnames 'namesleft :=
       #1 'nameptr :=
       { namesleft #0 > }
-        { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't := % last name 1st
+        { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't := % last name first
           nameptr #1 >
             { namesleft #1 >
                 { " " * t * }
@@ -486,116 +478,6 @@ FUNCTION {format.ed.names}
     }
   if$
 }
-
-%% Alternative versions.  See comments above the earlier {format.names}.
-% FUNCTION {format.names}
-% { 's :=
-%   #1 'nameptr :=
-%   s num.names$ 'numnames :=
-%   numnames maxauthors >
-%     { maxauthors 'namesleft := }
-%     { numnames 'namesleft := }
-%   if$
-%     { namesleft #0 > }
-%     { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=   % last name first
-%       nameptr #1 >
-%         { namesleft #1 >
-%             { " " * t * }
-%             { numnames #2 >
-%                 { "  " * }
-%                 'skip$
-%               if$
-%               t "others" =
-%                 { " et~al.," * }
-%                 { " " * t * }
-%               if$
-%             }
-%           if$
-%         }
-%         't
-%       if$
-%       nameptr #1 + 'nameptr :=
-%       namesleft #1 - 'namesleft :=
-%     }
-%   while$
-%   nameptr #1 - 'nameptr :=
-%   numnames nameptr >	% trapped by maxauthors
-%     { " et~al.," * }
-%     'skip$
-%   if$
-% }
-
-% FUNCTION {format.names.full}
-% { 's :=
-%   #1 'nameptr :=
-%   s num.names$ 'numnames :=
-%   numnames maxauthors >
-%     { maxauthors 'namesleft := }
-%     { numnames 'namesleft := }
-%   if$
-%     { namesleft #0 > }
-%     { s nameptr "{vv }{ll}{ jj}" format.name$ 't :=   % last name first
-%       nameptr #1 >
-%         {
-% 	  namesleft #1 >
-%             { ", " * t * }
-%             {
-%               t "others" =
-%                 { " et~al.," * }
-%                 { " \& " * t * }
-%               if$
-%             }
-%           if$
-%         }
-%         't
-%       if$
-%       nameptr #1 + 'nameptr :=
-%       namesleft #1 - 'namesleft :=
-%     }
-%   while$
-%   nameptr #1 - 'nameptr :=
-%   numnames nameptr >	% trapped by maxauthors
-%     { " et~al.," * }
-%     'skip$
-%   if$
-% }
-
-% FUNCTION {format.ed.names}
-% { 's :=
-%   #1 'nameptr :=
-%   s num.names$ 'numnames :=
-%   numnames maxauthors >
-%     { maxauthors 'namesleft := }
-%     { numnames 'namesleft := }
-%   if$
-%     { namesleft #0 > }
-%     { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=
-%       nameptr #1 >
-%         { namesleft #1 >
-%             { " " * t * }
-%             { numnames #2 >
-%                 { " " * }
-%                 'skip$
-%               if$
-%               t "others" =
-%                  { " et~al." * }
-%                 { " " * t * }
-%               if$
-%             }
-%           if$
-%         }
-%         't
-%       if$
-%       nameptr #1 + 'nameptr :=
-%       namesleft #1 - 'namesleft :=
-%     }
-%   while$
-%   nameptr #1 - 'nameptr :=
-%   numnames nameptr >	% trapped by maxauthors
-%     { " et~al.," * }
-%     'skip$
-%   if$
-% }
 
 FUNCTION {format.authors}
 { author empty$
@@ -1155,8 +1037,15 @@ FUNCTION {mastersthesis}
 FUNCTION {misc}
 { output.bibitem
   format.authors output
+  % The following at one time included output.year.misc.check rather
+  % than output.year.check.  It's not clear why, since this seems to
+  % have inevitably resulted in an extra comma in this case (ie,
+  % "Jones A, Smith B., , 2000, ....").  Use plain output.year.check
+  % until it becomes clear what the function of the (erroneous)
+  % output.year.misc.check is or was.
   author format.key output                              % special for
-  output.year.misc.check                                % apalike
+  %output.year.misc.check                               % apalike
+  output.year.check
   format.btitle output
   howpublished output
   fin.entry
@@ -1266,10 +1155,23 @@ FUNCTION {chop.word}
   if$
 }
 
-%                       There are three apalike cases: one person (Jones),
-%                       two (Jones and de~Bruijn), and more (Jones et~al.).
-%                       This function is much like format.crossref.editors.
+% There are three apalike cases: one person (Jones),
+% two (Jones and de~Bruijn), and more (Jones et~al.).
+% This function is much like format.crossref.editors.
 %
+% In the 'and others' branch below, the second space before 'et~al'
+% means that 'Smith and others' sorts after 'Smith' but before 'Smith
+% and Jones'.  This may or may not be compatible with the MN style
+% prescription that:
+%     If there are several references with the same first author,
+%     arrange in the following order: firstly single-author papers (by
+%     date); then two-author papers (alphabetically by co-author, then by
+%     date); then multi-author papers (by date). 
+% This ordering is acting as if 'Jones and others' is a single-author
+% paper which always sorts after other 'Jones' papers.  As well, it's
+% unexpectedly tricky to get this sorting with the multi-author papers
+% (since the label we're generating appears in the output, so we can't
+% put just anything in here).
 FUNCTION {format.lab.names}
 { 's :=
   s #1 "{vv~}{ll}" format.name$
@@ -1279,7 +1181,7 @@ FUNCTION {format.lab.names}
     { #2 <
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-            { " et~al." * }
+            { "  et~al." * }
             { " \& " * s #2 "{vv~}{ll}" format.name$ * }
           if$
         }
@@ -1388,7 +1290,7 @@ FUNCTION {calc.label}
   's :=
   % the '\protect... is for apalike
   "\protect\citeauthoryear{" t * "}{" *
-  threeauthorhack
+  threeauthorvar
   numnames #3 =
   and
     { "\protect\mniiiauthor{" cite$ * "}{" *
@@ -1515,6 +1417,7 @@ FUNCTION {presort}
   if$
   "    "
   *
+  year number.for.presort *
   #1 entry.max$ substring$
   'presort.key :=
   presort.key
