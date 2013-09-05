@@ -6,6 +6,9 @@
 \bibitem[\protect\citeauthoryear{One}{One}{2001}]{one}
 One A.,  2001, MNRAS, 1, 101
 
+\bibitem[\protect\citeauthoryear{One}{One}{2002}]{onereprised}
+One A.,  2002, MNRAS, 12, 1201
+
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001a}]{twobook}
 One A.,  Two B.,  2001a, Two Alone at Book Length.
 Repetitious press
@@ -19,6 +22,9 @@ One A.,  Two B.,  2001c, MNRAS, 2, 201
 
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001d}]{twobis}
 One A.,  Two B.,  2001d, MNRAS, 2, 221
+
+\bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2002}]{tworeprised}
+One A.,  Two B.,  2002, MNRAS, 22, 2201
 
 \bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001a}]{oneplus}
 One A.,  et~al., 2001a, MNRAS, 1, 111
@@ -73,5 +79,9 @@ One A.  et~al., 2001n, MNRAS, 10, 1011
 
 \bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001o}]{tenbis}
 One A.  et~al., 2001o, MNRAS, 10, 1021
+
+\bibitem[\protect\citeauthoryear{One, Two \& Three}{One
+  et~al.}{2002}]{threereprised}
+One A.,  Two B.,    Three C.,  2002, MNRAS, 32, 3201
 
 \end{thebibliography}

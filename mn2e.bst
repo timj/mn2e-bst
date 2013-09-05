@@ -1261,7 +1261,9 @@ FUNCTION {format.lab.names}
     { #2 <
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-            { " et~al." * }
+            { % the second space before 'et~al' means that 'Smith and others'
+              % sorts after 'Smith' but before 'Smith and Jones'
+              "  et~al." * }
             { " \& " * s #2 "{vv~}{ll}" format.name$ * }
           if$
         }
@@ -1497,6 +1499,7 @@ FUNCTION {presort}
   if$
   "    "
   *
+  year number.for.presort *
   #1 entry.max$ substring$
   'presort.key :=
   presort.key
