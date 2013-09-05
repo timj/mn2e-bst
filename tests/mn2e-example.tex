@@ -27,12 +27,10 @@ $^{2}$Elsewhere, On Earth}
 % be really worth it.
 \makeatletter
 \def\mniiiauthor#1#2#3{%
-  \expandafter\ifx\csname mniiiauth@#1\endcsname\relax
-    \global\expandafter\def\csname mniiiauth@#1\endcsname{X}#2%
-  \else
-    #3%
-  \fi}
-\makeatletter
+  \@ifundefined{mniiiauth@#1}
+    {\global\expandafter\let\csname mniiiauth@#1\endcsname\null #2}
+    {#3}}
+\makeatother
 
 \date{Whenever}
 
@@ -57,13 +55,16 @@ There are numerous citations here.
 In particular, there is
 `one'~\citep{one},
 `oneplus'~\citep{oneplus},
+`onereprised'~\citep{onereprised},
 `two'~\citep{two},
 `twoplus'~\citep{twoplus},
 `twobis'~\citep{twobis},
 `twobook'~\citep{twobook},
 `twomisc~\citep{twomisc},
+`tworeprised'~\citep{tworeprised},
 `three'~\citep{three},
 `threeplus'~\citep{threeplus},
+`threereprised'~\citep{threereprised},
 `four'~\citep{four},
 `fourplus'~\citep{fourplus},
 `seven'~\citep{seven},
@@ -76,16 +77,19 @@ In particular, there is
 `tenplus'~\citep{tenplus} and
 `tenbis'~\citep{tenbis}.
 
-On a second mention, there is
+And secondly, there is
 `one'~\citep{one},
 `oneplus'~\citep{oneplus},
+`onereprised'~\citep{onereprised},
 `two'~\citep{two},
 `twoplus'~\citep{twoplus},
 `twobis'~\citep{twobis},
 `twobook'~\citep{twobook},
 `twomisc~\citep{twomisc},
+`tworeprised'~\citep{tworeprised},
 `three'~\citep{three},
 `threeplus'~\citep{threeplus},
+`threereprised'~\citep{threereprised},
 `four'~\citep{four},
 `fourplus'~\citep{fourplus},
 `seven'~\citep{seven},

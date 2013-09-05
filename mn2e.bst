@@ -104,18 +104,14 @@ FUNCTION {init.state.consts}
   #3 'after.block :=
 }
 
-% If threeauthorhack is in initialise.mn2e, then the bibitem for a
+% If threeauthorvar is set to #1 in initialise.mn2e, then the bibitem for a
 % three-author reference is generated using a \mniiiauthor command.
-% This command should be defined as follows:
+% This command should be defined in the .cls file as follows:
 %
-%    \makeatletter
 %    \def\mniiiauthor#1#2#3{%
-%      \expandafter\ifx\csname mniiiauth@#1\endcsname\relax
-%        \global\expandafter\def\csname mniiiauth@#1\endcsname{X}#2%
-%      \else
-%        #3%
-%      \fi}
-%    \makeatletter
+%      \@ifundefined{mniiiauth@#1}
+%        {\global\expandafter\let\csname mniiiauth@#1\endcsname\null #2}
+%        {#3}}
 %
 % The effect of this is that the first time that \mniiiauthor{X}{a}{b}
 % is evaluated, it expands to 'a', and it thereafter expands to 'b'.
@@ -128,12 +124,12 @@ FUNCTION {init.state.consts}
 % surely possible to avoid this (with some constructions involving
 % {\\#1}; see Appendix D cleverness), but that would verge on the
 % arcane, and not be really worth it.
-INTEGERS { maxauthors threeauthorhack }
+INTEGERS { maxauthors threeauthorvar }
 
 FUNCTION {initialise.mn2e}
 {
   #8 'maxauthors :=
-  #0 'threeauthorhack :=
+  #1 'threeauthorvar :=
 }
 
 STRINGS { s t }
@@ -1372,7 +1368,7 @@ FUNCTION {calc.label}
   's :=
   % the '\protect... is for apalike
   "\protect\citeauthoryear{" t * "}{" *
-  threeauthorhack
+  threeauthorvar
   numnames #3 =
   and
     { "\protect\mniiiauthor{" cite$ * "}{" *
