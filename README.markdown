@@ -4,7 +4,7 @@ mn2e.bst
 
 mn2e.bst is the bibliography style file used for the latex2e Monthly
 Notices of the Royal Astronomical Society style file.  See the
-journal's instructions for authors at [OUP][], and the downloadable
+journal's instructions for authors at [OUP][] (Sect. 6.3), and the downloadable
 files at [CTAN][].
 
 [OUP]: http://www.oxfordjournals.org/our_journals/mnras/for_authors/
