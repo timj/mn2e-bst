@@ -10,13 +10,14 @@ files at [CTAN][].
 [OUP]: http://www.oxfordjournals.org/our_journals/mnras/for_authors/
 [CTAN]: http://www.tex.ac.uk/CTAN/macros/latex/contrib/mnras/
 
-An early version is distributed by Blackwell Scientific.
+Previously this file was distributed by Blackwell Scientific.
 
 Authors
 -------
 
 This style file was originally written by John Sleath and Tim Jenness
 at the Mullard Radio Astronomy Observatory in the summer of 1995. It
-was derived from the astron.bst and apalike.bst files.
+was derived from the astron.bst style file which itself was derived
+from the apalike.bst style file.
 
 Norman Gray provided the multi-author style fixes.
