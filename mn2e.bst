@@ -14,14 +14,11 @@
 %%  Description:
 %%     Provides a bibliography style that will allow bibtex to be
 %%     used when writing papers for MNRAS. This allows references
-%%     to be inserted automatically. For LaTeX2e we recommend that
-%%     NatBIB is used to specify references. For latex2.09 you must
-%%     use \cite to give (Smith \& Jones 1995) or \shortcite to give the year
-%%     (in brackets) only.
+%%     to be inserted automatically.
 
 %%  Notes:
 %%     This file should be used in conjunction with the Monthly Notices
-%%     style/class (mn2e.cls or mn.sty) from Blackwell Scientific
+%%     LaTeX2e class file (mn2e.cls).
 %%
 %%  Hyperlinks:
 %%     To make the eprint and doi bibtex fields hyperlinks, you need
@@ -31,20 +28,25 @@
 %%     John P. Sleath (MRAO)
 %%     Tim Jenness (MRAO/JAC)
 %%     Norman Gray (Glasgow University, Starlink) <norman@astro.gla.ac.uk>
+%%     Oren Patashnik
+%%     Susan King
+%%     Sake J. Hogeveen
+%%     Philip Hall
+%%     Simeon Bird
 
 %%  Bugs:
 %%     The formatting has been compared to the MN style, and is
 %%     believed to be compatible with it.  However this comparison has
 %%     (for obvious reasons) been done most carefully for articles, so
 %%     there may be deviations from it for other entry types.
-%%
-%%     In the text MN style forces 3 author papers
-%%     to fully list the authors first time the reference is mentioned. This
-%%     cannot be done automatically. Use \cite*{} the first time.
 
 %%  History:
+%%     1988 (Oren Patashnik and Susan King)
+%%        Apalike.bst derived from the "alpha.bst" style.
+%%     1990 (Sake J. Hogeveen)
+%%        Astron.bst derived from apalike.bst
 %%     Summer 1995 (JPS/TJ):
-%%        Extensively modified from astron.bst and apalike.bst
+%%        Extensively modified from astron.bst
 %%     19 Jul 1995 (JPS/TJ):
 %%        First release (version 1.1b)
 %%     02 May 2001 (NG):
