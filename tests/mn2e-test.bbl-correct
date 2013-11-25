@@ -9,13 +9,17 @@ One A.,  2001, MNRAS, 1, 101
 \bibitem[\protect\citeauthoryear{One}{One}{2002}]{onereprised}
 One A.,  2002, MNRAS, 12, 1201
 
+\bibitem[\protect\citeauthoryear{One et~al.,}{One  et~al.}{2001}]{oneplus}
+One A.,  et~al., 2001, MNRAS, 1, 111
+
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001a}]{twobook}
 One A.,  Two B.,  2001a, Two Alone at Book Length.
 Repetitious press
 
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001b}]{twomisc}
-One A.,  Two B., , 2001b, Two Alone in a Pamphlet (Let's Talk About Salami
-  Publishing\dots), obtained under the counter
+One A.,  Two B.,  2001b, Two Alone in a Pamphlet (Adventures in Salami
+  Publishing), obtained under the counter, \eprint{0100.0002}, \url
+  {http://example.org/my_salami#pubs}
 
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001c}]{two}
 One A.,  Two B.,  2001c, MNRAS, 2, 201
@@ -26,62 +30,66 @@ One A.,  Two B.,  2001d, MNRAS, 2, 221
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2002}]{tworeprised}
 One A.,  Two B.,  2002, MNRAS, 22, 2201
 
-\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001a}]{oneplus}
-One A.,  et~al., 2001a, MNRAS, 1, 111
+\bibitem[\protect\citeauthoryear{One, Two
+  et~al.,}{\protect\mniiiauthor{twoplus}{One, Two et~al.,}{One
+  et~al.}}{2001a}]{twoplus}
+One A.,  Two B.,    et~al., 2001a, \href
+  {http://dx.doi.org/10.1093/mnras/test2-211} {MNRAS}, \href
+  {http://adsabs.harvard.edu/abs/2001MNRAS.002..211S} {2, 211}
 
-\bibitem[\protect\citeauthoryear{One, Two et~al.,}{One et~al.}{2001b}]{twoplus}
-One A.,  Two B.,    et~al., 2001b, MNRAS, 2, 211
-
-\bibitem[\protect\citeauthoryear{One, Two \& Three}{One et~al.}{2001c}]{three}
-One A.,  Two B.,    Three C.,  2001c, MNRAS, 3, 301
+\bibitem[\protect\citeauthoryear{One, Two \&
+  Three}{\protect\mniiiauthor{three}{One, Two \& Three}{One
+  et~al.}}{2001b}]{three}
+One A.,  Two B.,    Three C.,  2001b, MNRAS, 3, 301
 
 \bibitem[\protect\citeauthoryear{One, Two, Three et~al.,}{One
-  et~al.}{2001d}]{threeplus}
-One A.,  Two B.,  Three C.,    et~al., 2001d, MNRAS, 3, 311
+  et~al.}{2001c}]{threeplus}
+One A.,  Two B.,  Three C.,    et~al., 2001c, MNRAS, 3, 311
 
 \bibitem[\protect\citeauthoryear{One, Two, Three \& Four}{One
-  et~al.}{2001e}]{four}
-One A.,  Two B.,  Three C.,    Four D.,  2001e, MNRAS, 4, 401
+  et~al.}{2001d}]{four}
+One A.,  Two B.,  Three C.,    Four D.,  2001d, MNRAS, 4, 401
 
 \bibitem[\protect\citeauthoryear{One, Two, Three, Four et~al.,}{One
-  et~al.}{2001f}]{fourplus}
-One A.,  Two B.,  Three C.,  Four D.,    et~al., 2001f, MNRAS, 4, 411
+  et~al.}{2001e}]{fourplus}
+One A.,  Two B.,  Three C.,  Four D.,    et~al., 2001e, MNRAS, 4, 411
 
 \bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six \& Seven}{One
-  et~al.}{2001g}]{seven}
-One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,    Seven G.,  2001g,
+  et~al.}{2001f}]{seven}
+One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,    Seven G.,  2001f,
   MNRAS, 7, 701
 
 \bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six, Seven
-  et~al.,}{One et~al.}{2001h}]{sevenplus}
+  et~al.,}{One et~al.}{2001g}]{sevenplus}
 One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,  Seven G.,    et~al.,
-  2001h, MNRAS, 7, 711
+  2001g, MNRAS, 7, 711
 
 \bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six, Seven \&
-  Eight}{One et~al.}{2001i}]{eight}
+  Eight}{One et~al.}{2001h}]{eight}
 One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,  Seven G.,    Eight
-  H.,  2001i, MNRAS, 8, 801
+  H.,  2001h, MNRAS, 8, 801
 
-\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001j}]{eightplus}
-One A.  et~al., 2001j, MNRAS, 8, 811
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001i}]{eightplus}
+One A.  et~al., 2001i, MNRAS, 8, 811
 
-\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001k}]{nine}
-One A.  et~al., 2001k, MNRAS, 9, 901
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001j}]{nine}
+One A.  et~al., 2001j, MNRAS, 9, 901
 
-\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001l}]{nineplus}
-One A.  et~al., 2001l, MNRAS, 9, 911
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001k}]{nineplus}
+One A.  et~al., 2001k, MNRAS, 9, 911
 
-\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001m}]{ten}
-One A.  et~al., 2001m, MNRAS, 10, 1001
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001l}]{ten}
+One A.  et~al., 2001l, MNRAS, 10, 1001
 
-\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001n}]{tenplus}
-One A.  et~al., 2001n, MNRAS, 10, 1011
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001m}]{tenplus}
+One A.  et~al., 2001m, MNRAS, 10, 1011
 
-\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001o}]{tenbis}
-One A.  et~al., 2001o, MNRAS, 10, 1021
+\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001n}]{tenbis}
+One A.  et~al., 2001n, MNRAS, 10, 1021
 
-\bibitem[\protect\citeauthoryear{One, Two \& Three}{One
-  et~al.}{2002}]{threereprised}
+\bibitem[\protect\citeauthoryear{One, Two \&
+  Three}{\protect\mniiiauthor{threereprised}{One, Two \& Three}{One
+  et~al.}}{2002}]{threereprised}
 One A.,  Two B.,    Three C.,  2002, MNRAS, 32, 3201
 
 \end{thebibliography}

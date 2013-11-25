@@ -109,6 +109,7 @@ ENTRY
     type
     volume
     year
+    adsurl % for MN style
     url
   }
   {}
@@ -175,6 +176,9 @@ FUNCTION {output.nonnull}
   s
 }
 
+% output.nonnull.extra is like output.nonnull, except that the thing
+% we output is 'extra' to a block, so if we're in the after.block
+% state, we append it rather than starting a new block.
 FUNCTION {output.nonnull.extra}
 { 's :=
   output.state mid.sentence =
@@ -363,6 +367,14 @@ FUNCTION {emphasize}
     { pop$ "" }
     { "{ " swap$ * "}" * }
   if$
+}
+
+% Make hyperref links.
+% The LaTeX hyperref package supports a macro \href{URL}{text}
+% The stack must be (link-text href-url 'make.href.hyperref)
+FUNCTION {make.href.hyperref}
+{ 
+  "\href {" swap$ * "} {" * swap$ * "}" *
 }
 
 INTEGERS { nameptr namesleft numnames }
@@ -682,6 +694,13 @@ FUNCTION {format.page}
   if$
 }
 
+FUNCTION {format.journal.doi}
+{ doi empty$
+    { journal }
+    { journal "http://dx.doi.org/" doi * make.href.hyperref }
+  if$
+}
+
 FUNCTION {format.vol.num.pages}
 { volume field.or.null
   number empty$
@@ -814,11 +833,12 @@ FUNCTION {format.thesis.type}
   if$
 }
 
+% the \url{} macro is supplied by hyperref
 FUNCTION {format.url}
 {
   url empty$
-    { skip$ }
-    { "\verb+" url * "+" * output.nonnull }
+    { "" }
+    { "\url {" url * "}" * }
   if$
 }
 
@@ -861,16 +881,21 @@ FUNCTION {article}
   format.authors "author" output.check
   author format.key output                              % special for
   output.year.check                                     % apalike
+  % MN style does not display eprints or DOIs on published articles,
+  % but does link the journal name to any available DOI.
   crossref missing$
-    { journal "journal" output.check.extra
-      format.vol.page output.extra
+    { format.journal.doi "journal" output.check.extra
+      % ...and links volume and page information to any available adsurl
+      adsurl empty$
+        { format.vol.page }
+        { format.vol.page adsurl make.href.hyperref }
+      if$
+      output.extra
     }
     { format.article.crossref output.nonnull
       format.page output
     }
   if$
-  format.eprint "eprint" output.check.nocomma
-  format.doi "doi" output.check.nocomma
   fin.entry
 }
 
@@ -902,6 +927,7 @@ FUNCTION {book}
   if$
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -915,6 +941,7 @@ FUNCTION {booklet}
   address output
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -937,7 +964,6 @@ FUNCTION {inbook}
   new.block
   crossref missing$
     {
-%      format.number.series output
       new.sentence
       publisher "publisher" output.check
       address output
@@ -949,6 +975,7 @@ FUNCTION {inbook}
   if$
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -974,6 +1001,7 @@ FUNCTION {incollection}
   format.chapter.pages output
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -1004,6 +1032,7 @@ FUNCTION {inproceedings}
   if$
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -1022,6 +1051,7 @@ FUNCTION {manual}
   format.edition output
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -1033,6 +1063,9 @@ FUNCTION {mastersthesis}
   "Master's thesis" format.thesis.type output.nonnull
   school "school" output.check
   address output
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -1050,6 +1083,9 @@ FUNCTION {misc}
   output.year.check
   format.btitle output
   howpublished output
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -1061,6 +1097,9 @@ FUNCTION {phdthesis}
   "PhD thesis" format.thesis.type output.nonnull
   school "school" output.check
   address output
+  format.eprint "eprint" output.check.nocomma
+  format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -1082,6 +1121,7 @@ FUNCTION {proceedings}
   address output
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -1092,12 +1132,13 @@ FUNCTION {techreport}
   output.year.check                                     % apalike
   format.tr.number output.nonnull
   format.btitle "title" output.check
-  format.url
+  format.url output
   new.block
   institution "institution" output.check
   address output
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
@@ -1108,8 +1149,10 @@ FUNCTION {unpublished}
   output.year.check                                     % apalike
   format.btitle "title" output.check
   note "note" output.check
+  % the following are presumably redundant for 'unpublished'
   format.eprint "eprint" output.check.nocomma
   format.doi "doi" output.check.nocomma
+  format.url output
   fin.entry
 }
 
