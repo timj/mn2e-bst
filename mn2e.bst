@@ -88,6 +88,7 @@ ENTRY
   { address
     doi
     eprint
+    archiveprefix               % used by ADS
     author
     booktitle
     chapter
@@ -541,7 +542,12 @@ FUNCTION {format.title}
 FUNCTION {format.eprint}
 { eprint empty$
     { "" }
-    {  ", \eprint{" * eprint * "}" }
+    { ", \eprint {"
+      archiveprefix empty$
+        { "" }
+        { archiveprefix }
+      if$
+      * "} {" * eprint * "}" * }
     if$
 }
 
@@ -697,7 +703,7 @@ FUNCTION {format.page}
 FUNCTION {format.journal.doi}
 { doi empty$
     { journal }
-    { journal "http://dx.doi.org/" doi * make.href.hyperref }
+    { "\doi [" journal * "] {" * doi * "}" * }
   if$
 }
 
@@ -1584,12 +1590,12 @@ FUNCTION {begin.bib}
   if$
   "\begin{thebibliography}{}"
     write$ newline$           % no labels in apalike
-  " \providecommand{\href}[2]{#2} "
-    write$ newline$
-  "  \providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}"
-    write$ newline$
-  "  \providecommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}"
-    write$ newline$
+%  " \providecommand{\href}[2]{#2} "
+%    write$ newline$
+%  "  \providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}"
+%    write$ newline$
+%  "  \providecommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}"
+%    write$ newline$
 }
 
 EXECUTE {begin.bib}

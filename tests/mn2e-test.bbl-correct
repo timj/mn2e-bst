@@ -1,7 +1,4 @@
 \begin{thebibliography}{}
- \providecommand{\href}[2]{#2}
-  \providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}
-  \providecommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}
 
 \bibitem[\protect\citeauthoryear{One}{One}{2001}]{one}
 One A.,  2001, MNRAS, 1, 101
@@ -18,8 +15,8 @@ Repetitious press
 
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001b}]{twomisc}
 One A.,  Two B.,  2001b, Two Alone in a Pamphlet (Adventures in Salami
-  Publishing), obtained under the counter, \eprint{0100.0002}, \url
-  {http://example.org/my_salami#pubs}
+  Publishing), obtained under the counter, \eprint {funky} {0100.0002},
+  \doi{10.1234/nowhere/One&Two_*#foo}, \url {http://example.org/my_salami#pubs}
 
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001c}]{two}
 One A.,  Two B.,  2001c, MNRAS, 2, 201
@@ -33,9 +30,8 @@ One A.,  Two B.,  2002, MNRAS, 22, 2201
 \bibitem[\protect\citeauthoryear{One, Two
   et~al.,}{\protect\mniiiauthor{twoplus}{One, Two et~al.,}{One
   et~al.}}{2001a}]{twoplus}
-One A.,  Two B.,    et~al., 2001a, \href
-  {http://dx.doi.org/10.1093/mnras/test2-211} {MNRAS}, \href
-  {http://adsabs.harvard.edu/abs/2001MNRAS.002..211S} {2, 211}
+One A.,  Two B.,    et~al., 2001a, \doi [MNRAS] {10.1093/mnras/test2-211},
+  \href {http://adsabs.harvard.edu/abs/2001MNRAS.002..211S} {2, 211}
 
 \bibitem[\protect\citeauthoryear{One, Two \&
   Three}{\protect\mniiiauthor{three}{One, Two \& Three}{One
