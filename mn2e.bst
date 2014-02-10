@@ -75,7 +75,8 @@
 %%
 %%     This work has the LPPL maintenance status `maintained'.
 %%
-%%     The Current Maintainer of this work is T. Jenness.
+%%     The Current Maintainers of this work are T. Jenness
+%%     and Norman Gray <norman@astro.gla.ac.uk>
 %%
 %%     This work consists of the file mn2e.bst
 
@@ -151,7 +152,7 @@ INTEGERS { maxauthors threeauthorvar }
 FUNCTION {initialise.mn2e}
 {
   #8 'maxauthors :=
-  #1 'threeauthorvar :=
+  #0 'threeauthorvar :=
 }
 
 STRINGS { s t }
@@ -1590,12 +1591,21 @@ FUNCTION {begin.bib}
   if$
   "\begin{thebibliography}{}"
     write$ newline$           % no labels in apalike
-%  " \providecommand{\href}[2]{#2} "
-%    write$ newline$
-%  "  \providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}"
-%    write$ newline$
-%  "  \providecommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}"
-%    write$ newline$
+%%% magic comments to include mn2e-bst.sty: see Makefile
+"\makeatletter" write$ newline$
+%%%=mn2e-bst.sty
+%%%+
+"" write$ newline$
+"\def\@urlcharsother{\let\do\@makeother \do\\\do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
+"\def\doi{\begingroup\@urlcharsother\@ifnextchar[{\@doi}{\@doi[]}}" write$ newline$
+"\def\@doi[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty\href{http://dx.doi.org/#2}{doi:#2}\else\href{http://dx.doi.org/#2}{#1}\fi\endgroup}" write$ newline$
+"\def\eprint#1#2{\@eprint#1:#2::\@nil}" write$ newline$
+"\def\@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}" write$ newline$
+"\def\@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}" write$ newline$
+"\def\@eprint#1:#2:#3:#4\@nil{\def\@tempa{#1}\def\@tempb{#2}\def\@tempc{#3}\ifx\@tempc\@empty\let\@tempc\@tempb\let\@tempb\@tempa\fi\ifx\@tempb\@empty\def\@tempb{arXiv}\fi\@ifundefined{@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter\expandafter\csname @eprint@\@tempb\endcsname\expandafter{\@tempc}}}" write$ newline$
+"\def\mniiiauthor#1#2#3{\@ifundefined{mniiiauth@#1}{\global\expandafter\let\csname mniiiauth@#1\endcsname\null #2}{#3}}" write$ newline$
+%%%-
+"\makeatother" write$ newline$
 }
 
 EXECUTE {begin.bib}

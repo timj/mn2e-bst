@@ -1,4 +1,18 @@
 \begin{thebibliography}{}
+\makeatletter
+
+\def\@urlcharsother{\let\do\@makeother
+  \do\\\do\$\do\&\do\#\do\^\do\_\do\%\do\~}
+\def\doi{\begingroup\@urlcharsother\@ifnextchar[{\@doi}{\@doi[]}}
+\def\@doi[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty\href{http://dx.doi.org/#2}{doi:#2}\else\href{http://dx.doi.org/#2}{#1}\fi\endgroup}
+\def\eprint#1#2{\@eprint#1:#2::\@nil}
+\def\@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}
+\def\@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}
+\def\@eprint#1:#2:#3:#4\@nil{\def\@tempa{#1}\def\@tempb{#2}\def\@tempc{#3}\ifx\@tempc\@empty\let\@tempc\@tempb\let\@tempb\@tempa\fi\ifx\@tempb\@empty\def\@tempb{arXiv}\fi\@ifundefined{@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter\expandafter\csname
+  @eprint@\@tempb\endcsname\expandafter{\@tempc}}}
+\def\mniiiauthor#1#2#3{\@ifundefined{mniiiauth@#1}{\global\expandafter\let\csname
+  mniiiauth@#1\endcsname\null #2}{#3}}
+\makeatother
 
 \bibitem[\protect\citeauthoryear{One}{One}{2001}]{one}
 One A.,  2001, MNRAS, 1, 101
@@ -27,15 +41,11 @@ One A.,  Two B.,  2001d, MNRAS, 2, 221
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2002}]{tworeprised}
 One A.,  Two B.,  2002, MNRAS, 22, 2201
 
-\bibitem[\protect\citeauthoryear{One, Two
-  et~al.,}{\protect\mniiiauthor{twoplus}{One, Two et~al.,}{One
-  et~al.}}{2001a}]{twoplus}
+\bibitem[\protect\citeauthoryear{One, Two et~al.,}{One et~al.}{2001a}]{twoplus}
 One A.,  Two B.,    et~al., 2001a, \doi [MNRAS] {10.1093/mnras/test2-211},
   \href {http://adsabs.harvard.edu/abs/2001MNRAS.002..211S} {2, 211}
 
-\bibitem[\protect\citeauthoryear{One, Two \&
-  Three}{\protect\mniiiauthor{three}{One, Two \& Three}{One
-  et~al.}}{2001b}]{three}
+\bibitem[\protect\citeauthoryear{One, Two \& Three}{One et~al.}{2001b}]{three}
 One A.,  Two B.,    Three C.,  2001b, MNRAS, 3, 301
 
 \bibitem[\protect\citeauthoryear{One, Two, Three et~al.,}{One
@@ -83,9 +93,8 @@ One A.  et~al., 2001m, MNRAS, 10, 1011
 \bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001n}]{tenbis}
 One A.  et~al., 2001n, MNRAS, 10, 1021
 
-\bibitem[\protect\citeauthoryear{One, Two \&
-  Three}{\protect\mniiiauthor{threereprised}{One, Two \& Three}{One
-  et~al.}}{2002}]{threereprised}
+\bibitem[\protect\citeauthoryear{One, Two \& Three}{One
+  et~al.}{2002}]{threereprised}
 One A.,  Two B.,    Three C.,  2002, MNRAS, 32, 3201
 
 \end{thebibliography}

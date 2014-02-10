@@ -19,8 +19,17 @@ $^{2}$Elsewhere, On Earth}
 
 % mn2e class file should either import the hyperref package, or else
 % provide suitable dummys for \href and \url
-\usepackage{hyperref}
+%\usepackage{hyperref}
 
+%% \usepackage{mn2e-bst}
+\def\href#1#2{#2}
+\def\urlinner#1{#1\endgroup}
+\def\url{\begingroup\def\do##1{\catcode`##1 12 }%
+  \do\\\do\$\do\&\do\#\do\^\do\_\do\%\do\~ \ttfamily \urlinner}
+%\def\@url#1{\texttt{#1}\endgroup}
+%\def\url{\begingroup\@urlcharsother \@url}
+
+\iffalse
 \makeatletter
 % The following three macros -- \doi, \eprint and \mniiiauthor --
 % should be migrated to mn2e.cls.
@@ -96,6 +105,7 @@ $^{2}$Elsewhere, On Earth}
 
 % ...end of prospective mn2e.cls material
 \makeatother
+\fi
 
 \begin{document}
 

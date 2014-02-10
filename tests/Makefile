@@ -7,7 +7,7 @@ mn2e-test.bbl: mn2e-test.aux mn2e-test.bib ../mn2e.bst
 	bibtex mn2e-test
 
 mn2e-example.pdf: mn2e-example.tex mn2e-test.bbl
-	pdflatex mn2e-example
+	TEXINPUTS=..: pdflatex mn2e-example
 
 clean:
 	rm -f mn2e-test.bbl mn2e-test.blg mn2e-test.diff
