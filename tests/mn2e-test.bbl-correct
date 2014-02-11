@@ -1,8 +1,6 @@
 \begin{thebibliography}{}
 \makeatletter
-
-\def\@urlcharsother{\let\do\@makeother
-  \do\\\do\$\do\&\do\#\do\^\do\_\do\%\do\~}
+\def\@urlcharsother{\let\do\@makeother\do\\\do\$\do\&\do\#\do\^\do\_\do\%\do\~}
 \def\doi{\begingroup\@urlcharsother\@ifnextchar[{\@doi}{\@doi[]}}
 \def\@doi[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty\href{http://dx.doi.org/#2}{doi:#2}\else\href{http://dx.doi.org/#2}{#1}\fi\endgroup}
 \def\eprint#1#2{\@eprint#1:#2::\@nil}

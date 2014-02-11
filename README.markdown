@@ -32,23 +32,21 @@ mn2e.cls class file.
     outside the generated bibliography (in `.bbl`).
 
 The file `mn2e-bst.sty` contains the definitions required to support
-the newly-generated `.bst` output.  This is packaged here as a `.sty`
-file, and it can either be loaded as such, using the usual
-`\usepackage{mn2e-bst}`, or else (better) incorporated directly into
-the `mn2e.cls` file.  In either of these cases, (i) the 'magic
-comments' should be removed from the definition of function
-`begin.bib` at the bottom of `mn2e.bst`; and (ii) the line `#0
-'threeauthorvar :=` in `mn2e.bst` can be changed to `#1
-'threeauthorvar :=`.  In consequence (iii) the `compress-sty.sed` and
-`Makefile` files can be removed from this directory (and this README
-reworded appropriately).
+the newly-generated `.bst` output.
 
-Alternatively, `mn2e.bst` is currently configured so that (i) it
-incorporates the `mn2e-bst.sty` file into the generated `.bbl` file, and
-(ii) the `\mniiiauthor` functionality is disabled, using the
-`threeauthorvar` switch mentioned above.  This means that the
-generated `.bbl` file is almost standalone, but this route is rather
-fiddly, and in consequence potentially fragile.
+Currently, `mn2e.bst` is configured so that (i) it incorporates the
+content of the `mn2e-bst.sty` file into the generated `.bbl` file (see
+the function `begin.bib`, at the bottom), and (ii) the `\mniiiauthor`
+functionality is disabled, using the setting `#0 threeauthorvar :=` in
+`initialise.mn2e`.  This means that the generated `.bbl` file is
+standalone, but doesn't support the MN 'three-authors' prescription.
+
+Ideally, this file will be incorporated directly into the `mn2e.cls`
+file, or at a pinch loaded as usual using the usual
+`\usepackage{mn2e-bst}`.  In this case, (i) the function `begin.bib`
+should be edited to remove the now-superfluous definitions; and (ii)
+the line `#0 'threeauthorvar :=` in `mn2e.bst` can be changed to `#1
+'threeauthorvar :=`.
 
 If hyperref is _not_ used, then it is necessary to define the `\href`
 and `\url` macros as follows:
@@ -71,5 +69,5 @@ was derived from the `astron.bst` style file which itself was derived
 from the `apalike.bst` style file.
 
 Norman Gray (<http://nxg.me.uk> and <http://8ameter.com>)
-provided the multi-author style fixes, and the additions
-
+provided the multi-author style fixes, and the additions to the
+style-file to support DOIs and the MN three-author requirement.
