@@ -1173,7 +1173,7 @@ MACRO {feb} {"Feb."}
 
 MACRO {mar} {"Mar."}
 
-MACRO {apr} {"Apr,"}
+MACRO {apr} {"Apr."}
 
 MACRO {may} {"May"}
 
