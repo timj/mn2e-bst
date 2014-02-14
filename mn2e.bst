@@ -63,6 +63,8 @@
 %%     August 2013 (NG):
 %%        Fixed a/b/c... year suffixes -- these now appear in the
 %%        correct order.
+%%     February 2014 (TJ):
+%%        Add MACROs for MN journal abbreviations
 %%
 %%  License:
 %%     This work may be distributed and/or modified under the
@@ -1188,6 +1190,198 @@ MACRO {oct} {"Oct."}
 MACRO {nov} {"Nov."}
 
 MACRO {dec} {"Dec."}
+
+%% Journal macros for bib files. Should be kept synchronized with
+%% the entries in the class file.
+
+%% Astronomy and Astrophysics
+MACRO {aap} {"A\&A"}
+
+%% Astronomy and Astrophysics
+MACRO {astap} {"A\&A"}
+
+%% Astronomy and Astrophysics Review (the)
+MACRO {aapr} {"A\&ARv"}
+
+%% Astronomy and Astrophysics Supplement Series
+MACRO {aaps} {"A\&AS"}
+
+%% Acta Astronomica
+MACRO {actaa} {"Acta Astron."}
+
+%% Astrofizika
+MACRO {afz} {"Afz"}
+
+%% Astronomical Journal (the)
+MACRO {aj} {"AJ"}
+
+%% Applied Optics
+MACRO {ao} {"Appl. Opt."}
+
+%% Applied Optics
+MACRO {applopt} {"Appl. Opt."}
+
+%% Astrophysics Letters
+MACRO {aplett} {"Astrophys.~Lett."}
+
+%% Astrophysical Journal
+MACRO {apj} {"ApJ"}
+
+%% Astrophysical Journal, Letters
+MACRO {apjl} {"ApJ"}
+
+%% Astrophysical Journal, Letters
+MACRO {apjlett} {"ApJ"}
+
+%% Astrophysical Journal, Supplement
+MACRO {apjs} {"ApJS"}
+
+%% Astrophysical Journal, Supplement
+MACRO {apjsupp} {"ApJS"}
+
+%% Astrophysics and Space Science
+MACRO {apss} {"Ap\&SS"}
+
+%% Annual Review of Astronomy and Astrophysics
+MACRO {araa} {"ARA\&A"}
+
+%% Astronomicheskii Zhurnal
+MACRO {azh} {"Azh"}
+
+%% Bulletin of the American Astronomical Society
+MACRO {baas} {"BAAS"}
+
+%% Bulletin of the Astronomical Institutes of Czechoslovakia
+MACRO {bac} {"Bull. Astron. Inst. Czechoslovakia"}
+
+%% Bulletin Astronomical Institute of the Netherlands
+MACRO {bain} {"Bull. Astron. Inst. Netherlands"}
+
+%% Chinese Astronomy and Astrophysics
+MACRO {caa} {"Chinese Astron. Astrophys."}
+
+%% Chinese Journal of Astronomy and Astrophysics
+MACRO {cjaa} {"Chinese J.~Astron. Astrophys."}
+
+%% Fundamentals of Cosmic Physics
+MACRO {fcp} {"Fundamentals Cosmic Phys."}
+
+%% Geochimica Cosmochimica Acta
+MACRO {gca} {"Geochimica Cosmochimica Acta"}
+
+%% Geophysics Research Letters
+MACRO {grl} {"Geophys. Res. Lett."}
+
+%% IAU Cirulars
+MACRO {iaucirc} {"IAU~Circ."}
+
+%% Icarus
+MACRO {icarus} {"Icarus"}
+
+%% Journal of Astrophysics and Astronomy
+MACRO {japa} {"J.~Astrophys. Astron."}
+
+%% Journal of Cosmology and Astroparticle Physics
+MACRO {jcap} {"J.~Cosmology Astropart. Phys."}
+
+%% Journal of Chemical Physics
+MACRO {jcp} {"J.~Chem.~Phys."}
+
+%% Journal of Geophysics Research
+MACRO {jgr} {"J.~Geophys.~Res."}
+
+%% Journal of Quantitiative Spectroscopy and Radiative Transfer
+MACRO {jqsrt} {"J.~Quant. Spectrosc. Radiative Transfer"}
+
+%% Journal of the RAS of Canada
+MACRO {jrasc} {"J.~R.~Astron. Soc. Canada"}
+
+%% Memoirs of the RAS
+MACRO {memras} {"Mem.~RAS"}
+
+%% Memoire della Societa Astronomica Italiana
+MACRO {memsai} {"Mem. Soc. Astron. Italiana"}
+
+%% Monthly Notes of the Astronomical Society of Southern Africa
+MACRO {mnassa} {"MNASSA"}
+
+%% Monthly Notices of the Royal Astronomical Society
+MACRO {mnras} {"MNRAS"}
+
+%% New Astronomy
+MACRO {na} {"New~Astron."}
+
+%% New Astronomy Review
+MACRO {nar} {"New~Astron.~Rev."}
+
+%% Nature
+MACRO {nat} {"Nature"}
+
+%% Nuclear Physics A
+MACRO {nphysa} {"Nuclear Phys.~A"}
+
+%% Physical Review A: General Physics
+MACRO {pra} {"Phys. Rev.~A"}
+
+%% Physical Review B: Solid State
+MACRO {prb} {"Phys. Rev.~B"}
+
+%% Physical Review C
+MACRO {prc} {"Phys. Rev.~C"}
+
+%% Physical Review D
+MACRO {prd} {"Phys. Rev.~D"}
+
+%% Physical Review E
+MACRO {pre} {"Phys. Rev.~E"}
+
+%% Physical Review Letters
+MACRO {prl} {"Phys. Rev.~Lett."}
+
+%% Publications of the Astronomical Society of Australia
+MACRO {pasa} {"PASA"}
+
+%% Publications of the Astronomical Society of the Pacific
+MACRO {pasp} {"PASP"}
+
+%% Publications of the Astronomical Society of Japan
+MACRO {pasj} {"PASJ"}
+
+%% Physics Reports
+MACRO {physrep} {"Phys.~Rep."}
+
+%% Physica Scripta
+MACRO {physscr} {"Phys.~Scr."}
+
+%% Planetary Space Science
+MACRO {planss} {"Planet. Space~Sci."}
+
+%% Proceedings of the Society of Photo-Optical Instrumentation Engineers
+MACRO {procspie} {"Proc.~SPIE"}
+
+%% Revista Mexicana de Astronomia y Astrofisica
+MACRO {rmxaa} {"Rev. Mex. Astron. Astrofis."}
+
+%% Quarterly Journal of the RAS
+MACRO {qjras} {"QJRAS"}
+
+%% Science
+MACRO {sci} {"Science"}
+
+%% Sky and Telescope
+MACRO {skytel} {"Sky \& Telesc."}
+
+%% Solar Physics
+MACRO {solphys} {"Sol.~Phys."}
+
+%% Soviet Astronomy (aka Astronomy Reports)
+MACRO {sovast} {"Soviet~Ast."}
+
+%% Space Science Reviews
+MACRO {ssr} {"Space Sci. Rev."}
+
+%% Zeitschrift fuer Astrophysik
+MACRO {zap} {"Z.~Astrophys."}
 
 READ
 
