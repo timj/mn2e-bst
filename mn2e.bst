@@ -1389,6 +1389,9 @@ MACRO {aspconf} {"ASP Conf. Ser."}
 %% Astronomische Nachrichten
 MACRO {astnach} {"Astron. Nachr."}
 
+%% Astronomy & Computing
+MACRO {astcomp} {"Astron. Comput."}
+
 READ
 
 FUNCTION {sortify}
