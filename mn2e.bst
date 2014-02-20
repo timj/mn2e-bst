@@ -393,7 +393,7 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames maxauthors >
     { % Too many authors -- format as First author et al.
-      s #1 "{vv }{ll}{ jj}{ f. }" format.name$  % last name first
+      s #1 "{vv }{ll}{ jj}{ f., }" format.name$  % last name first
       " et~al.," *
     }
     { % maxauthors or fewer -- print them all
@@ -1411,19 +1411,19 @@ FUNCTION {chop.word}
 % two (Jones and de~Bruijn), and more (Jones et~al.).
 % This function is much like format.crossref.editors.
 %
-% In the 'and others' branch below, the second space before 'et~al'
-% means that 'Smith and others' sorts after 'Smith' but before 'Smith
-% and Jones'.  This may or may not be compatible with the MN style
-% prescription that:
+% The goal here is to be compatible with the MN style prescription that:
 %     If there are several references with the same first author,
-%     arrange in the following order: firstly single-author papers (by
-%     date); then two-author papers (alphabetically by co-author, then by
-%     date); then multi-author papers (by date). 
-% This ordering is acting as if 'Jones and others' is a single-author
-% paper which always sorts after other 'Jones' papers.  As well, it's
-% unexpectedly tricky to get this sorting with the multi-author papers
-% (since the label we're generating appears in the output, so we can't
-% put just anything in here).
+%     arrange in the following order:
+%     firstly single-author papers (by date);
+%     then two-author papers (alphabetically by co-author, then by date);
+%     then multi-author papers (by date).
+% We deem 'Jones and others' to be a multi-author paper, in this sense,
+% so that it sorts, by date, with the three-or-more author papers.
+% An alternative is to deem 'Jones and others' to sort just after the single-author papers
+% (this case isn't really covered by the above rules, but this position looks sensible);
+% we can get that by putting extra spaces before the 'et~al.', as noted below.
+% Note: we can't put arbitrary characters here, to force the order,
+% because the result of this function appears as the citation label in the typeset result.
 FUNCTION {format.lab.names}
 { 's :=
   s #1 "{vv~}{ll}" format.name$
@@ -1433,7 +1433,8 @@ FUNCTION {format.lab.names}
     { #2 <
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-            { "  et~al." * }
+            { " et~al." * } % <-----+-- alternate sortings
+            %{ "   et~al." * } % <--+
             { " \& " * s #2 "{vv~}{ll}" format.name$ * }
           if$
         }
@@ -1662,11 +1663,12 @@ FUNCTION {presort}
   or
     'author.editor.key.label
     { type$ "proceedings" =
-        'editor.key.label                       % apalike ignores organization
-        'author.key.label                       % for labeling and sorting
+        'editor.key.label       % apalike ignores organization
+        'author.key.label       % for labeling and sorting
       if$
     }
   if$
+  purify$                       % remove {braces} round names, to avoid confusing sorting
   "    "
   *
   year number.for.presort *

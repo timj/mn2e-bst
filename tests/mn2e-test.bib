@@ -23,7 +23,19 @@
   journal = 	 {MNRAS},
   volume =       12,
   pages =        {1201-1204},
-  year = 	 {2002}
+  year = 	 {2003}
+}
+
+% Like {onereprised}, but with the surname in braces.
+% This should sort just before {onereprised} (because 2002<2003),
+% rather than sorting with '{'.
+@Article{onebracketed,
+  author =       {Albert {One}},
+  title =        {One Bracketed},
+  journal =      {MNRAS},
+  volume =       12,
+  pages =        {1205-1208},
+  year =         {2002}
 }
 
 @Article{two,
@@ -48,7 +60,7 @@
   doi =          {10.1093/mnras/test2-211},
   eprint =       {0100.0001v1},
   adsurl =       {http://adsabs.harvard.edu/abs/2001MNRAS.002..211S},
-  year = 	 {2001}
+  year = 	 {2003}
 }
 
 % Same author and year as 'two', but different paper/title
@@ -94,6 +106,22 @@
   year = 	 {2002}
 }
 
+% Papers {twobartearly} and {twobartlate} should appear before all
+% One&Two papers, because two-author papers sort by date then author.
+@Article{twobartearly,
+  author =       {Albert One and Bartholemew Deux},
+  title =        {Two Alternate},
+  journal =      {MNRAS},
+  year =         2000
+}
+
+@Article{twobartlate,
+  author =       {Albert One and Bartholemew Deux},
+  title =        {Two Alternate, Reprised},
+  journal =      {MNRAS},
+  year =         2003
+}
+
 @Article{three,
   author = 	 {Albert One and Benedict Two and C Three},
   title = 	 {Three Alone},
@@ -101,9 +129,13 @@
   volume =       3,
   number =       {n3},
   pages =        {301-304},
-  year = 	 {2001}
+  year = 	 {2007}
 }
 
+% The following multi-author papers are in descending order of years,
+% so they should end up sorting in the opposite order from their order
+% in this file.  The {*plus} papers are two years after the {*} papers,
+% so that they sort separately, confirming that the date is being noticed.
 @Article{threeplus,
   author = 	 {Albert One and Benedict Two and C Three and others},
   title = 	 {Three with friends},
@@ -111,7 +143,7 @@
   volume =       3,
   number =       {n3},
   pages =        {311-314},
-  year = 	 {2001}
+  year = 	 {2009}
 }
 
 @Article{threereprised,
@@ -121,7 +153,7 @@
   volume =       32,
   number =       {n32},
   pages =        {3201-3204},
-  year = 	 {2002}
+  year = 	 {2007}
 }
 
 @Article{four,
@@ -131,7 +163,7 @@
   volume =       4,
   number =       {n4},
   pages =        {401-404},
-  year = 	 {2001}
+  year = 	 {2006}
 }
 
 @Article{fourplus,
@@ -141,7 +173,7 @@
   volume =       4,
   number =       {n4},
   pages =        {411-414},
-  year = 	 {2001}
+  year = 	 {2008}
 }
 
 @Article{five,
@@ -150,7 +182,7 @@
   journal = 	 {MNRAS},
   volume =       5,
   pages =        {501-504},
-  year = 	 {2001}
+  year = 	 {2005}
 }
 
 @Article{fiveplus,
@@ -159,7 +191,7 @@
   journal = 	 {MNRAS},
   volume =       5,
   pages =        {511-514},
-  year = 	 {2001}
+  year = 	 {2007}
 }
 
 @Article{seven,
@@ -169,7 +201,7 @@
   journal = 	 {MNRAS},
   volume =       7,
   pages =        {701-704},
-  year = 	 2001
+  year = 	 2003
 }
 
 @Article{sevenplus,
@@ -179,7 +211,7 @@
   journal = 	 {MNRAS},
   volume =       7,
   pages =        {711-714},
-  year = 	 2001
+  year = 	 2005
 }
 
 @Article{eight,
@@ -189,7 +221,7 @@
   journal = 	 {MNRAS},
   volume =       8,
   pages =        {801-804},
-  year = 	 2001
+  year = 	 2002
 }
 
 @Article{eightplus,
@@ -199,7 +231,7 @@
   journal = 	 {MNRAS},
   volume =       8,
   pages =        {811-814},
-  year = 	 2001
+  year = 	 2004
 }
 
 @Article{nine,
@@ -219,7 +251,7 @@
   journal = 	 {MNRAS},
   volume =       9,
   pages =        {911-914},
-  year = 	 2001
+  year = 	 2003
 }
 
 @Article{ten,
@@ -230,7 +262,7 @@
   journal = 	 {MNRAS},
   volume =       10,
   pages =        {1001-1004},
-  year = 	 2001
+  year = 	 2000
 }
 
 @Article{tenplus,
@@ -241,7 +273,7 @@
   journal = 	 {MNRAS},
   volume =       10,
   pages =        {1011-1014},
-  year = 	 2001
+  year = 	 2002
 }
 
 % Same author and year as 'ten', but different paper/title.
@@ -255,6 +287,6 @@
   journal = 	 {MNRAS},
   volume =       10,
   pages =        {1021-1024},
-  year = 	 2001
+  year = 	 2000
 }
 
