@@ -1383,6 +1383,12 @@ MACRO {ssr} {"Space Sci. Rev."}
 %% Zeitschrift fuer Astrophysik
 MACRO {zap} {"Z.~Astrophys."}
 
+%% Astronomical Society of the Pacific Conference Series
+MACRO {aspconf} {"ASP Conf. Ser."}
+
+%% Astronomische Nachrichten
+MACRO {astnach} {"Astron. Nachr."}
+
 READ
 
 FUNCTION {sortify}
