@@ -1,0 +1,107 @@
+% The following definitions are to be emitted within the
+% {thebibliography} environment in the generated .bbl file.
+%
+% The contents of this file should be edited in this file, then
+% processed to add a 'write$ newline$' on each line, and then inserted
+% into the mn2e.bst file's {begin.bib} function, by hand.
+% It's possible to do this mechanically, of course, but that's more
+% intricate, and thus more error-prone, than seems worthwhile.
+%
+% A suitable sed command is:
+%
+%   sed -e '/^ *%/d' -e '/^ *$/d' -e 's/^ *\(.*\)/  "\1" write$ newline$/' mn2e-insert.sty >t.bst
+%
+% The definitions below depend on the presence of a \href{URL}{text}
+% macro, as provided by the hyperref package.  The mn2e.bst style
+% depends additionally on the \url{URL} macro, which hyperref also provides.
+%
+% If the hyperref package is not included, then suitable defaults are
+%
+%   \def\href#1#2{#2}
+%   \def\@url#1{#1\endgroup}
+%   \def\url{\begingroup\@urlcharsother \ttfamily \@url}
+%
+% These must appear _instead_ of loading the hyperref package
+% (it'll probably be OK to let the hyperref package redefine these,
+% but that is to tempt fate).
+
+% \mn@urlcharsother
+%
+% 'Other' some characters which may appear in DOIs and URIs.
+%
+% All of the characters here may appear in URIs, except for '^'.
+%
+% There appear to be almost no restrictions on what characters appear
+% in DOIs (or at least none discovereable in ISO 26324:2012, which
+% says simply that the 'DOI suffix' is "a character string of any
+% length".  A DOI registrant which uses characters outside ASCII plus
+% the following set, is a DOI registrant who should be taken outside
+% and challenged on their taste.
+%
+% The following list is not simply \dospecials, because that includes
+% '\', '{' and '}', which we need.  And if they're in a DOI... well.
+\def\mn@urlcharsother{%
+  \let\do\@makeother 
+  \do\$\do\&\do\#\do\^\do\_\do\%\do\~}
+
+% \mn@doi
+%
+% \mn@doi{10.foo} formats the DOI in the argument, and provides a link to dx.doi.org.
+% \mn@doi[text]{10.foo} formats the DOI 10.foo, but provides 'text' as the link.
+% The DOI can contain {\$&#^_%~} (though there's not necessarily a
+% guarantee that these will still work as URL characters within the PDF)
+\def\mn@doi{\begingroup
+  \mn@urlcharsother
+  \@ifnextchar[%
+    {\mn@doi@}
+    {\mn@doi@[]}}
+\def\mn@doi@[#1]#2{%
+  \def\@tempa{#1}%
+  \ifx\@tempa\@empty
+    \href{http://dx.doi.org/#2}{doi:#2}%
+  \else
+    \href{http://dx.doi.org/#2}{#1}%
+  \fi
+  \endgroup}
+
+% \mn@eprint
+%
+% \mn@eprint{defaultArchivePrefix}{id} expands to a link to the given ID
+% at a suitable archive.  The 'id' can be either a bare ID (such as
+% yymm.1234) for arXiv, or can include an archive prefix.  If there is
+% no prefix in the 'id', then 'defaultArchivePrefix' supplies a default.
+%
+% Thus
+%   \mn@eprint{}{arXiv:yymm.1234} -> \href{http://arxiv.org/abs/yymm.1234}{arXiv:yymm.1234}
+%   \mn@eprint{}{yymm.1234} -> same as \mn@eprint{}{arXiv:yymm.1234}
+%   \mn@eprint{arXiv}{arXiv:yymm.1234} -> same
+%   \mn@eprint{dblp}{1234} -> \href{http://dblp.uni-trier.de/rec/bibtex/1234.xml}{dblp:1234}
+%   \mn@eprint{dblp}{arXiv:yymm.1234} -> same as \mn@eprint{}{arXiv:yymm.1234}
+%   \mn@eprint{}{wibble:1234} -> wibble:1234 (doesn't match anything)
+%
+% A prefix 'PFX' is 'registered' by defining a macro
+% \mn@eprint@PFX#1{...} which formats the identifier (that is, \mn@eprint's
+% second argument _minus_ any colon-terminated prefix).
+\def\mn@eprint#1#2{%
+  \mn@eprint@#1:#2::\@nil}
+\def\mn@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}
+\def\mn@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}
+\def\mn@eprint@#1:#2:#3:#4\@nil{%
+  \def\@tempa{#1}%
+  \def\@tempb{#2}%
+  \def\@tempc{#3}%
+  \ifx\@tempc\@empty
+    \let\@tempc\@tempb
+    \let\@tempb\@tempa
+  \fi
+  \ifx\@tempb\@empty
+    % default to arXiv
+    \def\@tempb{arXiv}%
+  \fi
+  % If \@tempb is a 'recognised' prefix, then call it, otherwise, just
+  % print prefix:id and be done with it.  A prefix is 'recognised' if
+  % there's a macro \@eprint@<prefix>.
+  \@ifundefined{mn@eprint@\@tempb}
+    {\@tempb:\@tempc}
+    % or call macro '@eprint@\@tempb' on the argument \@tempc
+    {\expandafter\expandafter\csname mn@eprint@\@tempb\endcsname\expandafter{\@tempc}}}

@@ -545,7 +545,7 @@ FUNCTION {format.title}
 FUNCTION {format.eprint}
 { eprint empty$
     { "" }
-    { ", \eprint {"
+    { ", \mn@eprint {"
       archiveprefix empty$
         { "" }
         { archiveprefix }
@@ -557,7 +557,7 @@ FUNCTION {format.eprint}
 FUNCTION {format.doi}
 { doi empty$
     { "" }
-    { ", \doi{" * doi * "}" }
+    { ", \mn@doi{" * doi * "}" }
     if$
 }
 
@@ -706,7 +706,7 @@ FUNCTION {format.page}
 FUNCTION {format.journal.doi}
 { doi empty$
     { journal }
-    { "\doi [" journal * "] {" * doi * "}" * }
+    { "\mn@doi [" journal * "] {" * doi * "}" * }
   if$
 }
 
@@ -1791,17 +1791,45 @@ FUNCTION {begin.bib}
   if$
   "\begin{thebibliography}{}" write$ newline$ % no labels in apalike
   "\makeatletter" write$ newline$
-  % The following is the contents of mn2e-bst.sty, minus comments and whitespace
-  % (Do not edit this text, but edit that .sty file and paste the results in here).
-  "\def\@urlcharsother{\let\do\@makeother\do\\\do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
-  "\def\doi{\begingroup\@urlcharsother\@ifnextchar[{\@doi}{\@doi[]}}" write$ newline$
-  "\def\@doi[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty\href{http://dx.doi.org/#2}{doi:#2}\else\href{http://dx.doi.org/#2}{#1}\fi\endgroup}" write$ newline$
-  "\def\eprint#1#2{\@eprint#1:#2::\@nil}" write$ newline$
-  "\def\@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}" write$ newline$
-  "\def\@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}" write$ newline$
-  "\def\@eprint#1:#2:#3:#4\@nil{\def\@tempa{#1}\def\@tempb{#2}\def\@tempc{#3}\ifx\@tempc\@empty\let\@tempc\@tempb\let\@tempb\@tempa\fi\ifx\@tempb\@empty\def\@tempb{arXiv}\fi\@ifundefined{@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter\expandafter\csname @eprint@\@tempb\endcsname\expandafter{\@tempc}}}" write$ newline$
-  "\def\mniiiauthor#1#2#3{\@ifundefined{mniiiauth@#1}{\global\expandafter\let\csname mniiiauth@#1\endcsname\null #2}{#3}}" write$ newline$
-  "\makeatother" write$ newline$
+  % The following is the contents of mn2e-insert.sty, minus comments and whitespace
+  % (DO NOT EDIT THIS TEXT, but instead edit mn2e-insert.sty,
+  % run it through the sed script suggested there, and paste the results in here).
+  "\def\mn@urlcharsother{%" write$ newline$
+  "\let\do\@makeother " write$ newline$
+  "\do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
+  "\def\mn@doi{\begingroup" write$ newline$
+  "\mn@urlcharsother" write$ newline$
+  "\@ifnextchar[%" write$ newline$
+  "{\mn@doi@}" write$ newline$
+  "{\mn@doi@[]}}" write$ newline$
+  "\def\mn@doi@[#1]#2{%" write$ newline$
+  "\def\@tempa{#1}%" write$ newline$
+  "\ifx\@tempa\@empty" write$ newline$
+  "\href{http://dx.doi.org/#2}{doiXX:#2}%" write$ newline$
+  "\else" write$ newline$
+  "\href{http://dx.doi.org/#2}{#1}%" write$ newline$
+  "\fi" write$ newline$
+  "\endgroup" write$ newline$
+  "}" write$ newline$
+  "\def\mn@eprint#1#2{%" write$ newline$
+  "\mn@eprint@#1:#2::\@nil}" write$ newline$
+  "\def\mn@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}" write$ newline$
+  "\def\mn@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}" write$ newline$
+  "\def\mn@eprint@#1:#2:#3:#4\@nil{%" write$ newline$
+  "\def\@tempa{#1}%" write$ newline$
+  "\def\@tempb{#2}%" write$ newline$
+  "\def\@tempc{#3}%" write$ newline$
+  "\ifx\@tempc\@empty" write$ newline$
+  "\let\@tempc\@tempb" write$ newline$
+  "\let\@tempb\@tempa" write$ newline$
+  "\fi" write$ newline$
+  "\ifx\@tempb\@empty" write$ newline$
+  "\def\@tempb{arXiv}%" write$ newline$
+  "\fi" write$ newline$
+  "\@ifundefined{mn@eprint@\@tempb}" write$ newline$
+  "{\@tempb:\@tempc}" write$ newline$
+  "{\expandafter\expandafter\csname mn@eprint@\@tempb\endcsname\expandafter{\@tempc}}%" write$ newline$
+  "}" write$ newline$
 }
 
 EXECUTE {begin.bib}
@@ -1812,6 +1840,7 @@ ITERATE {call.type$}
 
 FUNCTION {end.bib}
 { newline$
+  "\makeatother" write$ newline$
   "\end{thebibliography}" write$ newline$
 }
 
