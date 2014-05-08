@@ -27,7 +27,7 @@
 %%  Authors:
 %%     John P. Sleath (MRAO)
 %%     Tim Jenness (MRAO/JAC)
-%%     Norman Gray (Glasgow University, Starlink) <norman@astro.gla.ac.uk>
+%%     Norman Gray (Glasgow University) <norman@astro.gla.ac.uk>
 %%     Oren Patashnik
 %%     Susan King
 %%     Sake J. Hogeveen
@@ -65,6 +65,9 @@
 %%        correct order.
 %%     February 2014 (TJ):
 %%        Add MACROs for MN journal abbreviations
+%%     May 2014 (NG):
+%%        Shorten some functions, so that bibtex's 'single function
+%%        space' parameter doesn't have to be above 100.
 %%
 %%  License:
 %%     This work may be distributed and/or modified under the
@@ -82,9 +85,7 @@
 %%
 %%     This work consists of the file mn2e.bst
 
-%%  Revision:
-%%     $Id$
-%%
+%%  This file is maintained on Github: https://github.com/timj/mn2e-bst/
 %%-
 
 ENTRY
@@ -250,8 +251,7 @@ FUNCTION {output.check}
 FUNCTION {output.check.nocomma}
 { 't :=
   duplicate$ empty$
-   % { pop$ "empty " t * " in " * cite$ * warning$ }
-     'pop$
+    'pop$ % or warn with { pop$ "empty " t * " in " * cite$ * warning$ }
     'output.nonnull.nocomma
   if$
 }
@@ -274,7 +274,7 @@ FUNCTION {output.year.check}
   if$
 }
 
-% Redundant?  See discussion in {misc}, below.
+% XXX Redundant?  See discussion in {misc}, below.
 FUNCTION {output.year.misc.check}
 { year empty$
     { "empty year in " cite$ * warning$ }
@@ -374,7 +374,10 @@ FUNCTION {emphasize}
 
 % Make hyperref links.
 % The LaTeX hyperref package supports a macro \href{URL}{text}
-% The stack must be (link-text href-url 'make.href.hyperref)
+%
+% On call, the stack contains
+%   href-url
+%   link-text
 FUNCTION {make.href.hyperref}
 { 
   "\href {" swap$ * "} {" * swap$ * "}" *
