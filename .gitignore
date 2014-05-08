@@ -1,3 +1,10 @@
 *.bbl
 *.blg
 *.diff
+
+mn2e-insert.txt
+
+tests/mn2e-example.aux
+tests/mn2e-example.log
+tests/mn2e-example.out
+tests/mn2e-example.pdf

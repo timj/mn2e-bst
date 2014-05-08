@@ -1,42 +1,14 @@
 \begin{thebibliography}{}
 \makeatletter
-\def\mn@urlcharsother{%
-\let\do\@makeother
-\do\$\do\&\do\#\do\^\do\_\do\%\do\~}
-\def\mn@doi{\begingroup
-\mn@urlcharsother
-\@ifnextchar[%
-{\mn@doi@}
-{\mn@doi@[]}}
-\def\mn@doi@[#1]#2{%
-\def\@tempa{#1}%
-\ifx\@tempa\@empty
-\href{http://dx.doi.org/#2}{doiXX:#2}%
-\else
-\href{http://dx.doi.org/#2}{#1}%
-\fi
-\endgroup
-}
-\def\mn@eprint#1#2{%
-\mn@eprint@#1:#2::\@nil}
+\relax
+\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}
+\def\mn@doi{\begingroup\mn@urlcharsother\@ifnextchar[{\mn@doi@}{\mn@doi@[]}}
+\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty\href{http://dx.doi.org/#2}{doi:#2}\else\href{http://dx.doi.org/#2}{#1}\fi\endgroup}
+\def\mn@eprint#1#2{\mn@eprint@#1:#2::\@nil}
 \def\mn@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}
 \def\mn@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}
-\def\mn@eprint@#1:#2:#3:#4\@nil{%
-\def\@tempa{#1}%
-\def\@tempb{#2}%
-\def\@tempc{#3}%
-\ifx\@tempc\@empty
-\let\@tempc\@tempb
-\let\@tempb\@tempa
-\fi
-\ifx\@tempb\@empty
-\def\@tempb{arXiv}%
-\fi
-\@ifundefined{mn@eprint@\@tempb}
-{\@tempb:\@tempc}
-{\expandafter\expandafter\csname
-  mn@eprint@\@tempb\endcsname\expandafter{\@tempc}}%
-}
+\def\mn@eprint@#1:#2:#3:#4\@nil{\def\@tempa{#1}\def\@tempb{#2}\def\@tempc{#3}\ifx\@tempc\@empty\let\@tempc\@tempb\let\@tempb\@tempa\fi\ifx\@tempb\@empty\def\@tempb{arXiv}\fi\@ifundefined{mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter\expandafter\csname
+  mn@eprint@\@tempb\endcsname\expandafter{\@tempc}}}
 
 \bibitem[\protect\citeauthoryear{One}{One}{2001}]{one}
 One A.,  2001, MNRAS, 1, 101
@@ -78,27 +50,27 @@ One A.,  et~al., 2000a, MNRAS, 10, 1001
 \bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2000b}]{tenbis}
 One A.,  et~al., 2000b, MNRAS, 10, 1021
 
-\bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001a}]{oneplus}
+\bibitem[\protect\citeauthoryear{One et~al.}{One et~al.}{2001a}]{oneplus}
 One A.,  et~al., 2001a, MNRAS, 1, 111
 
 \bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2001b}]{nine}
 One A.,  et~al., 2001b, MNRAS, 9, 901
 
-\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six, Seven \&
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six, Seven  \&
   Eight}{One et~al.}{2002a}]{eight}
-One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,  Seven G.,    Eight
-  H.,  2002a, MNRAS, 8, 801
+One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,  Seven G.,   Eight H.,
+   2002a, MNRAS, 8, 801
 
 \bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2002b}]{tenplus}
 One A.,  et~al., 2002b, MNRAS, 10, 1011
 
-\bibitem[\protect\citeauthoryear{One, Two et~al.,}{One et~al.}{2003a}]{twoplus}
-One A.,  Two B.,    et~al., 2003a, \mn@doi [MNRAS] {10.1093/mnras/test2-211},
+\bibitem[\protect\citeauthoryear{One, Two  et~al.}{One et~al.}{2003a}]{twoplus}
+One A.,  Two B.,   et~al., 2003a, \mn@doi [MNRAS] {10.1093/mnras/test2-211},
   \href {http://adsabs.harvard.edu/abs/2001MNRAS.002..211S} {2, 211}
 
-\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six \& Seven}{One
-  et~al.}{2003b}]{seven}
-One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,    Seven G.,  2003b,
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six  \&
+  Seven}{One et~al.}{2003b}]{seven}
+One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,   Seven G.,  2003b,
   MNRAS, 7, 701
 
 \bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2003c}]{nineplus}
@@ -107,37 +79,37 @@ One A.,  et~al., 2003c, MNRAS, 9, 911
 \bibitem[\protect\citeauthoryear{One et~al.,}{One et~al.}{2004}]{eightplus}
 One A.,  et~al., 2004, MNRAS, 8, 811
 
-\bibitem[\protect\citeauthoryear{One, Two, Three, Four \& Five}{One
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four  \& Five}{One
   et~al.}{2005a}]{five}
-One A.,  Two B.,  Three C.,  Four D.,    Five E.,  2005a, MNRAS, 5, 501
+One A.,  Two B.,  Three C.,  Four D.,   Five E.,  2005a, MNRAS, 5, 501
 
 \bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five, Six, Seven
-  et~al.,}{One et~al.}{2005b}]{sevenplus}
-One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,  Seven G.,    et~al.,
+  et~al.}{One et~al.}{2005b}]{sevenplus}
+One A.,  Two B.,  Three C.,  Four D.,  Five E.,  Six F.,  Seven G.,   et~al.,
   2005b, MNRAS, 7, 711
 
-\bibitem[\protect\citeauthoryear{One, Two, Three \& Four}{One
+\bibitem[\protect\citeauthoryear{One, Two, Three  \& Four}{One
   et~al.}{2006}]{four}
-One A.,  Two B.,  Three C.,    Four D.,  2006, MNRAS, 4, 401
+One A.,  Two B.,  Three C.,   Four D.,  2006, MNRAS, 4, 401
 
-\bibitem[\protect\citeauthoryear{One, Two \& Three}{One et~al.}{2007a}]{three}
-One A.,  Two B.,    Three C.,  2007a, MNRAS, 3, 301
+\bibitem[\protect\citeauthoryear{One, Two  \& Three}{One et~al.}{2007a}]{three}
+One A.,  Two B.,   Three C.,  2007a, MNRAS, 3, 301
 
-\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five et~al.,}{One
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four, Five  et~al.}{One
   et~al.}{2007b}]{fiveplus}
-One A.,  Two B.,  Three C.,  Four D.,  Five E.,    et~al., 2007b, MNRAS, 5, 511
+One A.,  Two B.,  Three C.,  Four D.,  Five E.,   et~al., 2007b, MNRAS, 5, 511
 
-\bibitem[\protect\citeauthoryear{One, Two \& Three}{One
+\bibitem[\protect\citeauthoryear{One, Two  \& Three}{One
   et~al.}{2007c}]{threereprised}
-One A.,  Two B.,    Three C.,  2007c, MNRAS, 32, 3201
+One A.,  Two B.,   Three C.,  2007c, MNRAS, 32, 3201
 
-\bibitem[\protect\citeauthoryear{One, Two, Three, Four et~al.,}{One
+\bibitem[\protect\citeauthoryear{One, Two, Three, Four  et~al.}{One
   et~al.}{2008}]{fourplus}
-One A.,  Two B.,  Three C.,  Four D.,    et~al., 2008, MNRAS, 4, 411
+One A.,  Two B.,  Three C.,  Four D.,   et~al., 2008, MNRAS, 4, 411
 
-\bibitem[\protect\citeauthoryear{One, Two, Three et~al.,}{One
+\bibitem[\protect\citeauthoryear{One, Two, Three  et~al.}{One
   et~al.}{2009}]{threeplus}
-One A.,  Two B.,  Three C.,    et~al., 2009, MNRAS, 3, 311
+One A.,  Two B.,  Three C.,   et~al., 2009, MNRAS, 3, 311
 
 \makeatother
 \end{thebibliography}

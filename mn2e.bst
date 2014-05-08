@@ -157,7 +157,7 @@ FUNCTION {initialise.mn2e}
   #0 'threeauthorvar :=
 }
 
-STRINGS { s t }
+STRINGS { s t fmt sep }
 
 FUNCTION {output.nonnull}
 { 's :=
@@ -224,7 +224,6 @@ FUNCTION {output.nonnull.nocomma}
   if$
   s
 }
-
 
 FUNCTION {output}
 { duplicate$ empty$
@@ -383,117 +382,130 @@ FUNCTION {make.href.hyperref}
 
 INTEGERS { nameptr namesleft numnames }
 
-%% Name formatting.  According to the MN instructions for authors, `In
-%% the references list [...] List all authors if eight or fewer,
-%% otherwise et al.'.  This means (according to a ruling from the MN
-%% editors) that if there are eight or more authors, they should be
-%% listed as "first one plus et al."
+% Helper functions for print.all.names: print the last or 'others' name.
+%
+% On call, the stack contains
+%  a formatted name,
+%  and the built-up string of names so far.
+FUNCTION {print.all.names.plain.trailer}
+{ duplicate$ "others" =
+    { pop$ " et~al.," * }
+    { " " swap$ * * }
+  if$
+}
+
+% as above
+FUNCTION {print.all.names.label.trailer}
+{ duplicate$ "others" =
+    { pop$ " et~al." * }
+    { " \& " swap$ * * }
+  if$
+}
+
+% Print out the complete author list
+% (because we have maxauthors or fewer).
+%
+% On call, the stack contains
+%   a format string (for format.name$),
+%   a name-separator string (such as ", "),
+%   an author or editor field,
+%   and one of the 'trailer' functions above.
+FUNCTION {print.all.names}
+{ 'fmt :=
+  'sep :=
+  's :=
+  s num.names$ 'namesleft :=
+  namesleft #2 < % we're not going to need the trailer function, so discard it
+    'pop$
+    'skip$
+  if$
+  #1 'nameptr :=
+  { namesleft #0 > }
+    { s nameptr fmt format.name$ 't := % last name first
+      nameptr #1 >
+        { namesleft #1 >
+            { sep * t * }
+            { % namesleft == 1: this is the last name.
+              % Invoke the trailer function.
+              s num.names$ #2 > % _why_ do we add this extra space for long lists?
+                { " " * }
+                'skip$
+              if$
+              % This next line is a bit clever.
+              %
+              % We start with a stack
+              %   string containing the list of names so far
+              %   trailer function
+              %
+              % Rearrange the stack so that we have 
+              %   'skip
+              %   trailer function
+              %   #1
+              %   t
+              %   names so far
+              % then call if$.  This is a rather indirect way of
+              % invoking the trailer function on the stack 
+              %   t
+              %   names so far
+              %
+              % Ta dahhhh!
+              swap$ t swap$ #1 swap$ 'skip$ if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+% Name formatting.  According to the MN instructions for authors, `In
+% the references list [...] List all authors if eight or fewer,
+% otherwise et al.'.  This means (according to a ruling from the MN
+% editors) that if there are eight or more authors, they should be
+% listed as "first one plus et al."
+%
+% On call, the stack contains
+%   an author or editor field.
 FUNCTION {format.names}
-{ 's :=
-  s num.names$ 'numnames :=
-  numnames maxauthors >
+{ duplicate$ num.names$ maxauthors >
     { % Too many authors -- format as First author et al.
-      s #1 "{vv }{ll}{ jj}{ f., }" format.name$  % last name first
+      #1 "{vv }{ll}{ jj}{ f., }" format.name$  % last name first
       " et~al.," *
     }
-    { % maxauthors or fewer -- print them all
-      numnames 'namesleft :=
-      #1 'nameptr :=
-      { namesleft #0 > }
-        { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't := % last name first
-          nameptr #1 >
-            { namesleft #1 >
-                { " " * t * }
-                { numnames #2 >
-                    { "  " * }
-                    'skip$
-                  if$
-                  t "others" =
-                    { " et~al.," * }
-                    { " " * t * }
-                  if$
-                }
-              if$
-            }
-            't
-          if$
-          nameptr #1 + 'nameptr :=
-          namesleft #1 - 'namesleft :=
-        }
-      while$
-    }
+    { 'print.all.names.plain.trailer swap$ " " "{vv }{ll}{ jj}{ f., }" print.all.names }
   if$
 }
 
-FUNCTION {format.names.full}
-{ 's :=
-  s num.names$ 'numnames :=
-  numnames maxauthors >
+% Format an author/editor field, for inclusion in a label
+% (ie, "Surname, Surname \& Surname")
+%
+% On call, the stack contains an author/editor field.
+FUNCTION {format.names.label}
+{ duplicate$ num.names$ maxauthors >
     { % Too many authors -- format as First author et al.
-      s #1 "{vv }{ll}{ jj}" format.name$  % last name first
+      #1 "{vv }{ll}{ jj}" format.name$  % last name first
       " et~al.," *
     }
-    { % maxauthors or fewer -- print them all
-      numnames 'namesleft :=
-      #1 'nameptr :=
-      { namesleft #0 > }
-        { s nameptr "{vv }{ll}{ jj}" format.name$ 't :=   % last name first
-          nameptr #1 >
-            {
-              namesleft #1 >
-                { ", " * t * }
-                {
-                  t "others" =
-                    { " et~al.," * }
-                    { " \& " * t * }
-                  if$
-                }
-              if$
-            }
-            't
-          if$
-          nameptr #1 + 'nameptr :=
-          namesleft #1 - 'namesleft :=
-        }
-      while$
-    }
+    { 'print.all.names.label.trailer swap$ ", " "{vv }{ll}" print.all.names }
   if$
 }
 
+% Format editor names.  This appears to be almost identical to
+% format.names, except for an extra comma in the latter, in the
+% too-many-authors case.
+%
+% XXX Is this a mistake?  Should this and format.names be collapsed
+% into a single function?
 FUNCTION {format.ed.names}
-{ 's :=
-  s num.names$ 'numnames :=
-  numnames maxauthors >
+{ duplicate$ num.names$ maxauthors >
     { % Too many authors -- format as First author et al.
-      s #1 "{vv }{ll}{ jj}{ f. }" format.name$  % last name first
+      #1 "{vv }{ll}{ jj}{ f. }" format.name$  % last name first
       " et~al.," *
     }
-    { % maxauthors or fewer -- print them all
-      numnames 'namesleft :=
-      #1 'nameptr :=
-      { namesleft #0 > }
-        { s nameptr "{vv }{ll}{ jj}{ f., }" format.name$ 't :=
-          nameptr #1 >
-            { namesleft #1 >
-                { " " * t * }
-                { numnames #2 >
-                    { " " * }
-                    'skip$
-                  if$
-                  t "others" =
-                     { " et~al." * }
-                    { " " * t * }
-                  if$
-                }
-              if$
-            }
-            't
-          if$
-          nameptr #1 + 'nameptr :=
-          namesleft #1 - 'namesleft :=
-        }
-      while$
-    }
+    { 'print.all.names.plain.trailer swap$ " " "{vv }{ll}{ jj}{ f., }" print.all.names }
   if$
 }
 
@@ -1497,10 +1509,10 @@ FUNCTION {author.editor.key.label.full}
             'key
           if$
         }
-        { editor format.names.full }
+        { editor format.names.label }
       if$
     }
-    { author format.names.full }
+    { author format.names.label }
   if$
 }
 
@@ -1525,8 +1537,8 @@ FUNCTION {calc.label}
   or
     'author.editor.key.label.full
     { type$ "proceedings" =
-        { editor format.names.full }
-        { author format.names.full }
+        { editor format.names.label }
+        { author format.names.label }
       if$
     }
   if$
@@ -1578,7 +1590,7 @@ FUNCTION {sort.format.names}
           'skip$
       if$
       nameptr numnames = t "others" = and
-       { " et~al." * }
+        { " et~al." * }
         { t sortify * }
       if$
       nameptr #1 + 'nameptr :=
@@ -1797,44 +1809,16 @@ FUNCTION {begin.bib}
   "\begin{thebibliography}{}" write$ newline$ % no labels in apalike
   "\makeatletter" write$ newline$
   % The following is the contents of mn2e-insert.sty, minus comments and whitespace
-  % (DO NOT EDIT THIS TEXT, but instead edit mn2e-insert.sty,
-  % run it through the sed script suggested there, and paste the results in here).
-  "\def\mn@urlcharsother{%" write$ newline$
-  "\let\do\@makeother " write$ newline$
-  "\do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
-  "\def\mn@doi{\begingroup" write$ newline$
-  "\mn@urlcharsother" write$ newline$
-  "\@ifnextchar[%" write$ newline$
-  "{\mn@doi@}" write$ newline$
-  "{\mn@doi@[]}}" write$ newline$
-  "\def\mn@doi@[#1]#2{%" write$ newline$
-  "\def\@tempa{#1}%" write$ newline$
-  "\ifx\@tempa\@empty" write$ newline$
-  "\href{http://dx.doi.org/#2}{doiXX:#2}%" write$ newline$
-  "\else" write$ newline$
-  "\href{http://dx.doi.org/#2}{#1}%" write$ newline$
-  "\fi" write$ newline$
-  "\endgroup" write$ newline$
-  "}" write$ newline$
-  "\def\mn@eprint#1#2{%" write$ newline$
-  "\mn@eprint@#1:#2::\@nil}" write$ newline$
-  "\def\mn@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}" write$ newline$
-  "\def\mn@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}" write$ newline$
-  "\def\mn@eprint@#1:#2:#3:#4\@nil{%" write$ newline$
-  "\def\@tempa{#1}%" write$ newline$
-  "\def\@tempb{#2}%" write$ newline$
-  "\def\@tempc{#3}%" write$ newline$
-  "\ifx\@tempc\@empty" write$ newline$
-  "\let\@tempc\@tempb" write$ newline$
-  "\let\@tempb\@tempa" write$ newline$
-  "\fi" write$ newline$
-  "\ifx\@tempb\@empty" write$ newline$
-  "\def\@tempb{arXiv}%" write$ newline$
-  "\fi" write$ newline$
-  "\@ifundefined{mn@eprint@\@tempb}" write$ newline$
-  "{\@tempb:\@tempc}" write$ newline$
-  "{\expandafter\expandafter\csname mn@eprint@\@tempb\endcsname\expandafter{\@tempc}}%" write$ newline$
-  "}" write$ newline$
+  % (DO NOT EDIT THIS TEXT, but instead make mn2e-insert.txt,
+  % and paste the results in here).
+"\relax" write$ newline$
+"\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
+"\def\mn@doi{\begingroup\mn@urlcharsother\@ifnextchar[{\mn@doi@}{\mn@doi@[]}}" write$ newline$
+"\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty\href{http://dx.doi.org/#2}{doi:#2}\else\href{http://dx.doi.org/#2}{#1}\fi\endgroup}" write$ newline$
+"\def\mn@eprint#1#2{\mn@eprint@#1:#2::\@nil}" write$ newline$
+"\def\mn@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}" write$ newline$
+"\def\mn@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}" write$ newline$
+"\def\mn@eprint@#1:#2:#3:#4\@nil{\def\@tempa{#1}\def\@tempb{#2}\def\@tempc{#3}\ifx\@tempc\@empty\let\@tempc\@tempb\let\@tempb\@tempa\fi\ifx\@tempb\@empty\def\@tempb{arXiv}\fi\@ifundefined{mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter\expandafter\csname mn@eprint@\@tempb\endcsname\expandafter{\@tempc}}}" write$ newline$
 }
 
 EXECUTE {begin.bib}

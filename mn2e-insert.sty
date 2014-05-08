@@ -55,6 +55,7 @@
   \@ifnextchar[%
     {\mn@doi@}
     {\mn@doi@[]}}
+
 \def\mn@doi@[#1]#2{%
   \def\@tempa{#1}%
   \ifx\@tempa\@empty
@@ -84,8 +85,10 @@
 % second argument _minus_ any colon-terminated prefix).
 \def\mn@eprint#1#2{%
   \mn@eprint@#1:#2::\@nil}
+
 \def\mn@eprint@arXiv#1{\href{http://arxiv.org/abs/#1}{{\tt arXiv:#1}}}
 \def\mn@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}
+
 \def\mn@eprint@#1:#2:#3:#4\@nil{%
   \def\@tempa{#1}%
   \def\@tempb{#2}%
@@ -105,3 +108,5 @@
     {\@tempb:\@tempc}
     % or call macro '@eprint@\@tempb' on the argument \@tempc
     {\expandafter\expandafter\csname mn@eprint@\@tempb\endcsname\expandafter{\@tempc}}}
+
+\relax
