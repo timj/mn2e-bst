@@ -2,6 +2,9 @@
 *.blg
 *.diff
 
+mn2e.bst
+assemble-bst.sed
+
 mn2e-insert.txt
 
 tests/mn2e-example.aux
