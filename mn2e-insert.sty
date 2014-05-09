@@ -1,15 +1,23 @@
+% Meta remarks:
+%
 % The following definitions are to be emitted within the
 % {thebibliography} environment in the generated .bbl file.
+% That is, (contrary to appearances) this file is _not_ expected to be
+% imported using \usepackage, and it is laid out as such merely for convenience.
 %
 % The contents of this file should be edited in this file, then
 % processed to add a 'write$ newline$' on each line, and then inserted
-% into the mn2e.bst file's {begin.bib} function, by hand.
-% It's possible to do this mechanically, of course, but that's more
-% intricate, and thus more error-prone, than seems worthwhile.
+% into the mn2e.bst file's {begin.bib} function.  This can be done
+% either by hand or using the minify.sed script in the distribution.
 %
-% A suitable sed command is:
+% The code below inserts whitespace after command-sequences whereever
+% feasible.  This is because the processing of this file can create
+% rather long lines, and bibtex's output line-breaking can mangle
+% these badly if there aren't plenty of spaces to help it (we don't
+% want linebreaks inside command-sequences!).
 %
-%   sed -e '/^ *%/d' -e '/^ *$/d' -e 's/^ *\(.*\)/  "\1" write$ newline$/' mn2e-insert.sty >t.bst
+%
+% More LaTeX-ish remarks:
 %
 % The definitions below depend on the presence of a \href{URL}{text}
 % macro, as provided by the hyperref package.  The mn2e.bst style
@@ -90,23 +98,23 @@
 \def\mn@eprint@dblp#1{\href{http://dblp.uni-trier.de/rec/bibtex/#1.xml}{dblp:#1}}
 
 \def\mn@eprint@#1:#2:#3:#4\@nil{%
-  \def\@tempa{#1}%
-  \def\@tempb{#2}%
-  \def\@tempc{#3}%
-  \ifx\@tempc\@empty
+  \def\@tempa {#1}%
+  \def\@tempb {#2}%
+  \def\@tempc {#3}%
+  \ifx \@tempc \@empty
     \let\@tempc\@tempb
     \let\@tempb\@tempa
   \fi
-  \ifx\@tempb\@empty
+  \ifx \@tempb \@empty
     % default to arXiv
     \def\@tempb{arXiv}%
   \fi
   % If \@tempb is a 'recognised' prefix, then call it, otherwise, just
   % print prefix:id and be done with it.  A prefix is 'recognised' if
   % there's a macro \@eprint@<prefix>.
-  \@ifundefined{mn@eprint@\@tempb}
+  \@ifundefined {mn@eprint@\@tempb}
     {\@tempb:\@tempc}
     % or call macro '@eprint@\@tempb' on the argument \@tempc
-    {\expandafter\expandafter\csname mn@eprint@\@tempb\endcsname\expandafter{\@tempc}}}
+    {\expandafter \expandafter \csname mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
 
 \relax
