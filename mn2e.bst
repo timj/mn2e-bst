@@ -274,19 +274,6 @@ FUNCTION {output.year.check}
   if$
 }
 
-% XXX Redundant?  See discussion in {misc}, below.
-FUNCTION {output.year.misc.check}
-{ year empty$
-    { "empty year in " cite$ * warning$ }
-    { write$
-     output.state mid.sentence =
-      { "," write$ } {} if$
-      " " year * extra.label *
-      mid.sentence 'output.state :=
-    }
-  if$
-}
-
 FUNCTION {output.bibitem}
 { newline$
   "\bibitem[" write$
@@ -495,22 +482,6 @@ FUNCTION {format.names.label}
     { 'print.all.names.label.trailer swap$ ", " "{vv }{ll}" print.all.names }
   if$
 }
-
-% Format editor names.  This appears to be almost identical to
-% format.names, except for an extra comma in the latter, in the
-% too-many-authors case.
-%
-% XXX Is this a mistake?  Should this and format.names be collapsed
-% into a single function?
-% FUNCTION {format.ed.names}
-% { duplicate$ num.names$ maxauthors >
-%     { % Too many authors -- format as First author et al.
-%       #1 "{vv }{ll}{ jj}{ f. }" format.name$  % last name first
-%       " et~al.," *
-%     }
-%     { 'print.all.names.plain.trailer swap$ " " "{vv }{ll}{ jj}{ f., }" print.all.names }
-%   if$
-% }
 
 FUNCTION {format.authors}
 { author empty$
@@ -1096,14 +1067,7 @@ FUNCTION {mastersthesis}
 FUNCTION {misc}
 { output.bibitem
   format.authors output
-  % The following at one time included output.year.misc.check rather
-  % than output.year.check.  It's not clear why, since this seems to
-  % have inevitably resulted in an extra comma in this case (ie,
-  % "Jones A, Smith B., , 2000, ....").  Use plain output.year.check
-  % until it becomes clear what the function of the (erroneous)
-  % output.year.misc.check is or was.
-  author format.key output                              % special for
-  %output.year.misc.check                               % apalike
+  author format.key output                              % special for apalike
   output.year.check
   format.btitle output
   howpublished output
