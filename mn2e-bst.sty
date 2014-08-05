@@ -8,17 +8,31 @@
 
 
 
-% \mniiiauthor
+% \mniiiauthor{citekey}{first-use}{short-form}
 %
 % The following implements the three-author-hack described in mn2e.bst.
+% That is: we give the 'author' of a reference as \mniiiauthor{}{}{},
+% where the 'first-use' argument contains the long form of the trio of
+% author names (eg "Cholmondeley, Featherstonehaugh and Beaulieu"), and
+% the 'short-form' argument contains a shortened form (eg
+% "Cholmondeley et al").  The 'first-use' form is used on the first
+% citation of the names, and the 'short-form' thereafter.
+%
+% Within captions, use only the 'short-form', and do not count this as
+% the first use of the name.
 %
 % This consumes a command for each such author.  It's surely possible
 % to avoid this (with some constructions involving {\\#1}; see
-% Appendix D cleverness), but that would verge on the unmaintanably
+% Appendix D cleverness), but that would verge on the unmaintainably
 % arcane, and not be really worth it.
 \def\mniiiauthor#1#2#3{%
-  \@ifundefined{mniiiauth@#1}
-    {\global\expandafter\let\csname mniiiauth@#1\endcsname\null #2}
-    {#3}}
+  \@ifundefined{@captype}
+    {\@ifundefined{mniiiauth@#1}
+      {\global\expandafter\let\csname mniiiauth@#1\endcsname\null #2}
+      {#3}}
+    {% in a caption -- use the 'short-form' version and don't set the flag
+     % to use the 'first-use' form instead, just change this to #2
+    #3}
+}
 
 \endinput
