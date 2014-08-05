@@ -502,15 +502,15 @@ FUNCTION {format.names.label}
 %
 % XXX Is this a mistake?  Should this and format.names be collapsed
 % into a single function?
-FUNCTION {format.ed.names}
-{ duplicate$ num.names$ maxauthors >
-    { % Too many authors -- format as First author et al.
-      #1 "{vv }{ll}{ jj}{ f. }" format.name$  % last name first
-      " et~al.," *
-    }
-    { 'print.all.names.plain.trailer swap$ " " "{vv }{ll}{ jj}{ f., }" print.all.names }
-  if$
-}
+% FUNCTION {format.ed.names}
+% { duplicate$ num.names$ maxauthors >
+%     { % Too many authors -- format as First author et al.
+%       #1 "{vv }{ll}{ jj}{ f. }" format.name$  % last name first
+%       " et~al.," *
+%     }
+%     { 'print.all.names.plain.trailer swap$ " " "{vv }{ll}{ jj}{ f., }" print.all.names }
+%   if$
+% }
 
 FUNCTION {format.authors}
 { author empty$
@@ -541,7 +541,7 @@ FUNCTION {format.editors}
 FUNCTION {format.editors.extra}
 { editor empty$
     { "" }
-    { editor format.ed.names
+    { editor format.names
       editor num.names$ #1 >
         { " eds" * }
         { " ed." * }
