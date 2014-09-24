@@ -68,6 +68,12 @@
 %%     May 2014 (NG):
 %%        Shorten some functions, so that bibtex's 'single function
 %%        space' parameter doesn't have to be above 100.
+%%     Sep 2014 (Jared M. Gabor):
+%%         Enabled ArXiv e-print identifier to be printed for articles that
+%%         are pre-prints only (and have "ArXiv e-print" in the journal field).
+%%         Still some problems with the use of commas.  Only 1 comma will appear
+%%         between the year and "arXiv..." for such preprints, but for e.g.
+%%         conference precedings there may be no comma at all.
 %%
 %%  License:
 %%     This work may be distributed and/or modified under the
@@ -531,7 +537,7 @@ FUNCTION {format.title}
 FUNCTION {format.eprint}
 { eprint empty$
     { "" }
-    { ", \mn@eprint {"
+    { " \mn@eprint {"
       archiveprefix empty$
         { "" }
         { archiveprefix }
@@ -689,10 +695,21 @@ FUNCTION {format.page}
   if$
 }
 
+% If a paper is available as a preprint only, ADS will call the
+% journal "ArXiv e-print".  In this case MN suggests the journal
+% should be called "preprint".
 FUNCTION {format.journal.doi}
 { doi empty$
-    { journal }
-    { "\mn@doi [" journal * "] {" * doi * "}" * }
+    { journal "ArXiv e-prints" =
+        { "preprint" }
+        { journal }
+      if$
+    }
+    { journal "ArXiv e-prints" =
+        { "preprint" }
+        { "\mn@doi [" journal * "] {" * doi * "}" * }
+      if$
+    }
   if$
 }
 
@@ -891,6 +908,13 @@ FUNCTION {article}
       format.page output
     }
   if$
+
+  % If the "journal" field is the arXiv, then print out the arXiv identifier
+  journal "ArXiv e-prints" =
+    { format.eprint "eprint" output.check.nocomma }
+    { }
+  if$
+
   fin.entry
 }
 
