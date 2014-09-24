@@ -366,7 +366,7 @@ FUNCTION {emphasize}
 %   href-url
 %   link-text
 FUNCTION {make.href.hyperref}
-{ 
+{
   "\href {" swap$ * "} {" * swap$ * "}" *
 }
 
@@ -427,14 +427,14 @@ FUNCTION {print.all.names}
               %   string containing the list of names so far
               %   trailer function
               %
-              % Rearrange the stack so that we have 
+              % Rearrange the stack so that we have
               %   'skip
               %   trailer function
               %   #1
               %   t
               %   names so far
               % then call if$.  This is a rather indirect way of
-              % invoking the trailer function on the stack 
+              % invoking the trailer function on the stack
               %   t
               %   names so far
               %
@@ -1673,7 +1673,7 @@ FUNCTION {presort}
   'sort.key$ :=
   sort.key$ 'sort.label :=
 }
-  
+
 EXECUTE {initialise.mn2e}
 
 ITERATE {presort}
