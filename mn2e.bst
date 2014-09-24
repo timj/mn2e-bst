@@ -537,12 +537,12 @@ FUNCTION {format.title}
 FUNCTION {format.eprint}
 { eprint empty$
     { "" }
-    { " \mn@eprint {"
+    { " (\mn@eprint {"
       archiveprefix empty$
         { "" }
         { archiveprefix }
       if$
-      * "} {" * eprint * "}" * }
+      * "} {" * eprint * "})" * }
     if$
 }
 
