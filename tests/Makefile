@@ -1,13 +1,31 @@
-check: mn2e-test.bbl mn2e-test.bbl-correct
-	@diff mn2e-test.bbl-correct mn2e-test.bbl >mn2e-test.diff \
-	  && echo OK \
-	  || { echo FAIL; cat mn2e-test.diff; }
+CHECKS=test-multiauthor test-eprints
 
-mn2e-test.bbl: mn2e-test.aux mn2e-test.bib ../mn2e.bst
-	bibtex mn2e-test
+%.bbl: %.aux mn2e-test.bib ../mn2e.bst
+	bibtex $<
 
-mn2e-example.pdf: mn2e-example.tex mn2e-test.bbl
+%.diff: %.bbl
+	rm -f $@
+	diff ${<}-correct $< >$@ || :
+
+# The following succeeds, and prints 'All tests OK', if all of the
+# .diff files are of zero size; if one or more is non-empty, it
+# reports that, and ends reporting an error.
+#
+# 'test -s filename' is true if 'filename' exists and has non-zero size
+check: $(CHECKS:=.diff)
+	@allgood=:; \
+	  for f in $(CHECKS); do \
+	    if test -s $$f.diff; then \
+	      echo "FAIL: $$f"; allgood=false; \
+	    else \
+	      echo "OK: $$f"; rm $$f.diff; \
+	    fi; \
+	  done; \
+	$$allgood
+	@echo "All tests OK"
+
+mn2e-example.pdf: mn2e-example.tex test-multiauthor.bbl
 	TEXINPUTS=..: pdflatex mn2e-example
 
 clean:
-	rm -f mn2e-test.bbl mn2e-test.blg mn2e-test.diff
+	rm -f *.bbl *.blg *.diff

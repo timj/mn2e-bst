@@ -534,16 +534,47 @@ FUNCTION {format.title}
   if$
 }
 
+% The format of the output string for arXiv is specifically {\tt arXiv:nnn}, and
+% not for example \texttt{arXiv:nnn} or \fancyarxivmacro{nnn}
+% (see http://arxiv.org/help/faq/references).
+% The format of the ascl reference isn't specified so precisely, but
+% we should use the same format.
 FUNCTION {format.eprint}
 { eprint empty$
     { "" }
-    { " (\mn@eprint {"
-      archiveprefix empty$
-        { "" }
-        { archiveprefix }
+    { " ("
+      % Match arxiv:nnn or arXiv:nnn
+      eprint #1 #6 substring$
+      duplicate$ "arXiv:" = swap$ "arxiv:" = or
+        { eprint #7 #999 substring$ duplicate$
+          "\href {http://arxiv.org/abs/" swap$ * "} {{\tt arXiv:" * swap$ * "}}" *
+        }
+        { % match ascl:
+          eprint #1 #5 substring$
+          "ascl:" =
+            { eprint #6 #999 substring$ duplicate$
+              "\href {http://ascl.net/" swap$ * "} {{\tt ascl:" * swap$ * "}}" *
+            }
+            { % match dblp: and DBLP:
+              eprint #1 #5 substring$ duplicate$
+              "dblp:" = swap$ "DBLP:" = or
+                { eprint #6 #999 substring$ duplicate$
+                  "\href {http://dblp.uni-trier.de/rec/html/" swap$ *
+                  "} {{\tt dblp:" * swap$ * "}}" *
+                }
+                { % no recognised prefix: default to arXiv
+                  eprint duplicate$
+                  "\href {http://arxiv.org/abs/" swap$ * "} {{\tt arXiv:" * swap$ * "}}" *
+                }
+              if$
+            }
+          if$
+        }
       if$
-      * "} {" * eprint * "})" * }
-    if$
+      *
+      ")" *
+    }
+  if$
 }
 
 FUNCTION {format.doi}
@@ -1802,14 +1833,10 @@ FUNCTION {begin.bib}
   % The following is the contents of mn2e-insert.sty, minus comments and whitespace.
   % DO NOT EDIT THIS TEXT,
   % but instead make mn2e-insert.txt, and paste the results in here.
-"\relax" write$ newline$
-"\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
-"\def\mn@doi{\begingroup\mn@urlcharsother \@ifnextchar [ {\mn@doi@} {\mn@doi@[]}}" write$ newline$
-"\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty \href {http://dx.doi.org/#2} {doi:#2}\else \href {http://dx.doi.org/#2} {#1}\fi \endgroup}" write$ newline$
-"\def\mn@eprint#1#2{\mn@eprint@#1:#2::\@nil}" write$ newline$
-"\def\mn@eprint@arXiv#1{\href {http://arxiv.org/abs/#1} {{\tt arXiv:#1}}}" write$ newline$
-"\def\mn@eprint@dblp#1{\href {http://dblp.uni-trier.de/rec/bibtex/#1.xml} {dblp:#1}}" write$ newline$
-"\def\mn@eprint@#1:#2:#3:#4\@nil{\def\@tempa {#1}\def\@tempb {#2}\def\@tempc {#3}\ifx \@tempc \@empty \let \@tempc \@tempb \let \@tempb \@tempa \fi \ifx \@tempb \@empty \def\@tempb {arXiv}\fi \@ifundefined {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}" write$ newline$
+  "\relax" write$ newline$
+  "\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
+  "\def\mn@doi{\begingroup\mn@urlcharsother \@ifnextchar [ {\mn@doi@} {\mn@doi@[]}}" write$ newline$
+  "\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty \href {http://dx.doi.org/#2} {doi:#2}\else \href {http://dx.doi.org/#2} {#1}\fi \endgroup}" write$ newline$
 }
 
 EXECUTE {begin.bib}
