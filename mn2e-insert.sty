@@ -72,48 +72,4 @@
   \fi
   \endgroup}
 
-% \mn@eprint
-%
-% \mn@eprint{defaultArchivePrefix}{id} expands to a link to the given ID
-% at a suitable archive.  The 'id' can be either a bare ID (such as
-% yymm.1234) for arXiv, or can include an archive prefix.  If there is
-% no prefix in the 'id', then 'defaultArchivePrefix' supplies a default.
-%
-% Thus
-%   \mn@eprint{}{arXiv:yymm.1234} -> \href{http://arxiv.org/abs/yymm.1234}{arXiv:yymm.1234}
-%   \mn@eprint{}{yymm.1234} -> same as \mn@eprint{}{arXiv:yymm.1234}
-%   \mn@eprint{arXiv}{arXiv:yymm.1234} -> same
-%   \mn@eprint{dblp}{1234} -> \href{http://dblp.uni-trier.de/rec/bibtex/1234.xml}{dblp:1234}
-%   \mn@eprint{dblp}{arXiv:yymm.1234} -> same as \mn@eprint{}{arXiv:yymm.1234}
-%   \mn@eprint{}{wibble:1234} -> wibble:1234 (doesn't match anything)
-%
-% A prefix 'PFX' is 'registered' by defining a macro
-% \mn@eprint@PFX#1{...} which formats the identifier (that is, \mn@eprint's
-% second argument _minus_ any colon-terminated prefix).
-\def\mn@eprint#1#2{%
-  \mn@eprint@#1:#2::\@nil}
-
-\def\mn@eprint@arXiv#1{\href {http://arxiv.org/abs/#1} {{\tt arXiv:#1}}}
-\def\mn@eprint@dblp#1{\href {http://dblp.uni-trier.de/rec/bibtex/#1.xml} {dblp:#1}}
-
-\def\mn@eprint@#1:#2:#3:#4\@nil{%
-  \def\@tempa {#1}%
-  \def\@tempb {#2}%
-  \def\@tempc {#3}%
-  \ifx \@tempc \@empty
-    \let \@tempc \@tempb
-    \let \@tempb \@tempa
-  \fi
-  \ifx \@tempb \@empty
-    % default to arXiv
-    \def\@tempb {arXiv}%
-  \fi
-  % If \@tempb is a 'recognised' prefix, then call it, otherwise, just
-  % print prefix:id and be done with it.  A prefix is 'recognised' if
-  % there's a macro \@eprint@<prefix>.
-  \@ifundefined {mn@eprint@\@tempb}
-    {\@tempb:\@tempc}
-    % or call macro '@eprint@\@tempb' on the argument \@tempc
-    {\expandafter \expandafter \csname mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
-
 \relax

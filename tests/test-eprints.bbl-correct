@@ -1,0 +1,29 @@
+\begin{thebibliography}{}
+\makeatletter
+\relax
+\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}
+\def\mn@doi{\begingroup\mn@urlcharsother \@ifnextchar [ {\mn@doi@}
+  {\mn@doi@[]}}
+\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty \href
+  {http://dx.doi.org/#2} {doi:#2}\else \href {http://dx.doi.org/#2} {#1}\fi
+  \endgroup}
+
+\bibitem[\protect\citeauthoryear{One}{One}{2014}]{eprint1}
+One A.,  2014, in Early Thoughts Conference.  (\href
+  {http://arxiv.org/abs/1401.0001} {{\tt arXiv:1401.0001}})
+
+\bibitem[\protect\citeauthoryear{Three}{Three}{2014a}]{eprint3}
+Three C.,  2014a, in Early Thoughts Conference.  (\href
+  {http://ascl.net/1401.003} {{\tt ascl:1401.003}})
+
+\bibitem[\protect\citeauthoryear{Three}{Three}{2014b}]{eprint4}
+Three C.,  2014b, in Early Thoughts Conference.  (\href
+  {http://dblp.uni-trier.de/rec/html/journals/corr/AccomazziGEBFS14} {{\tt
+  dblp:journals/corr/AccomazziGEBFS14}})
+
+\bibitem[\protect\citeauthoryear{Two}{Two}{2014}]{eprint2}
+Two B.,  2014, in Early Thoughts Conference.  (\href
+  {http://arxiv.org/abs/1401.0002} {{\tt arXiv:1401.0002}})
+
+\makeatother
+\end{thebibliography}

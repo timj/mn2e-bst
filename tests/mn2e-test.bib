@@ -84,14 +84,14 @@
 }
 
 % Same authors and year as {twobook}
-% Also includes a DOI and a funky archivePrefix field.
+% Also includes a DOI and a funky archivePrefix field (which should be ignored).
 @Misc{twomisc,
   author = 	 {Albert One and Benedict Two},
   title = 	 {Two Alone in a Pamphlet (Adventures in Salami Publishing)},
   howpublished = 	 {obtained under the counter},
   archivePrefix = "funky",
   doi =          {10.1234/nowhere/One&Two_*#foo},
-  eprint =       {0100.0002},
+  xxxeprint =       {0100.0002},
   url =          {http://example.org/my_salami#pubs},
   year = 	 {2001}
 }
@@ -290,3 +290,31 @@
   year = 	 2000
 }
 
+@InProceedings{eprint1,
+  author =       {Albert One},
+  title =        {Article with Preprint},
+  booktitle =    {Early Thoughts Conference},
+  year =         2014,
+  eprint =       {1401.0001}
+}
+@InProceedings{eprint2,
+  author =       {Benedict Two},
+  title =        {Another Article with Preprint},
+  booktitle =    {Early Thoughts Conference},
+  year =         2014,
+  eprint =       {arxiv:1401.0002}
+}
+@InProceedings{eprint3,
+  author =       {Coriolanus Three},
+  title =        {Yet Another Article with Computing Preprint},
+  booktitle =    {Early Thoughts Conference},
+  year =         2014,
+  eprint =       {ascl:1401.003}
+}
+@InProceedings{eprint4,
+  author =       {Coriolanus Three},
+  title =        {Yet Another Article with DBLP Preprint},
+  booktitle =    {Early Thoughts Conference},
+  year =         2014,
+  eprint =       {DBLP:journals/corr/AccomazziGEBFS14}
+}
