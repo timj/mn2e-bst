@@ -1,39 +1,21 @@
-% mn2e-example.tex
+% mnras-example.tex
 %
 % This is a skeleton MN-format article which displays the generated
-% test bibliography (mn2e-test.bbl) as it would appear in an article.
+% test bibliography (mnras-test.bbl) as it would appear in an article.
 % To see this, try:
 %
-%     make mn2e-example.pdf
+%     make mnras-example.pdf
 %
-% Note that the mn2e-test.aux file is written by hand; the
-% mn2e-example.aux file generated from this file is ignored.
+% Note that the mnras-test.aux file is written by hand; the
+% mnras-example.aux file generated from this file is ignored.
 
-\documentclass[useAMS,usenatbib]{mn2e}
+\documentclass[useAMS,usenatbib]{mnras}
 
 \title[Illustrations of Citations]{Illustrations of Citations}
 \author[Albert One and Benedict Two]{Albert One$^{1}$\thanks{E-mail:
 ao@example.ac.uk (AO)} and Benedict Two$^{2}$\\
 $^{1}$A Place, Somewhere\\
 $^{2}$Elsewhere, On Earth}
-
-% The mn2e class file should either import the hyperref package, or else
-% provide suitable replacements for \href and \url.
-%
-% So, one of...
-%    \usepackage{hyperref}
-%
-% or, in the document...
-\def\href#1#2{#2}
-\def\urlinner#1{#1\endgroup}
-\def\url{\begingroup\def\do##1{\catcode`##1 12 }%
-  \do\$\do\&\do\#\do\^\do\_\do\%\do\~ \ttfamily \urlinner}
-%
-% or, in the .cls file, and after the content of mn2e-bst.sty...
-%    \def\href#1#2{#2}
-%    \def\@url#1{#1\endgroup}
-%    \def\url{\begingroup\@urlcharsother \ttfamily \@url}
-
 
 \begin{document}
 
@@ -118,11 +100,11 @@ And secondly, there is
 
 
 
-% ../mn2e.bst can generate a \logsortkey in the output, for
+% ../mnras.bst can generate a \logsortkey in the output, for
 % debugging.  That's generally commented out, but if you need to
 % uncomment that, then uncomment this, too.
 %\def\logsortkey#1{{[\tiny #1]}}
-\input{mn2e-test.bbl}
+\input{mnras-test.bbl}
 
 \bsp
 

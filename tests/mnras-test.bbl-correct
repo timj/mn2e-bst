@@ -38,7 +38,7 @@ Repetitious press
 
 \bibitem[\protect\citeauthoryear{One \& Two}{One \& Two}{2001b}]{twomisc}
 One A.,  Two B.,  2001b, Two Alone in a Pamphlet (Adventures in Salami
-  Publishing), obtained under the counter, \mn@eprint {funky} {0100.0002},
+  Publishing), obtained under the counter (\mn@eprint {funky} {0100.0002}),
   \mn@doi{10.1234/nowhere/One&Two_*#foo}, \url
   {http://example.org/my_salami#pubs}
 

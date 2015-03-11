@@ -1,13 +1,13 @@
-check: mn2e-test.bbl mn2e-test.bbl-correct
-	@diff mn2e-test.bbl-correct mn2e-test.bbl >mn2e-test.diff \
+check: mnras-test.bbl mnras-test.bbl-correct
+	@diff mnras-test.bbl-correct mnras-test.bbl >mnras-test.diff \
 	  && echo OK \
-	  || { echo FAIL; cat mn2e-test.diff; }
+	  || { echo FAIL; cat mnras-test.diff; }
 
-mn2e-test.bbl: mn2e-test.aux mn2e-test.bib ../mn2e.bst
-	bibtex mn2e-test
+mnras-test.bbl: mnras-test.aux mnras-test.bib ../mnras.bst
+	bibtex mnras-test
 
-mn2e-example.pdf: mn2e-example.tex mn2e-test.bbl
-	TEXINPUTS=..: pdflatex mn2e-example
+mnras-example.pdf: mnras-example.tex mnras-test.bbl
+	TEXINPUTS=..: pdflatex mnras-example
 
 clean:
-	rm -f mn2e-test.bbl mn2e-test.blg mn2e-test.diff
+	rm -f mnras-test.bbl mnras-test.blg mnras-test.diff
