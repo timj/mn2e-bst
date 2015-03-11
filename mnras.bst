@@ -1,6 +1,6 @@
 %%+
 %%  Name:
-%%     mn2e.bst
+%%     mnras.bst
 
 %%  Purpose:
 %%     BibTeX Bibliography style file for MNRAS
@@ -18,7 +18,7 @@
 
 %%  Notes:
 %%     This file should be used in conjunction with the Monthly Notices
-%%     LaTeX2e class file (mn2e.cls).
+%%     LaTeX2e class file (mnras.cls).
 %%
 %%  Hyperlinks:
 %%     To make the eprint and doi bibtex fields hyperlinks, you need
@@ -74,6 +74,9 @@
 %%         Still some problems with the use of commas.  Only 1 comma will appear
 %%         between the year and "arXiv..." for such preprints, but for e.g.
 %%         conference precedings there may be no comma at all.
+%%     09 March 2015 (TJ):
+%%         At the request of Keith Smith this file has been renamed to be mnras.bst
+%%         to match the new naming convention for the MNRAS class file.
 %%
 %%  License:
 %%     This work may be distributed and/or modified under the
@@ -89,7 +92,7 @@
 %%     The Current Maintainers of this work are T. Jenness
 %%     and Norman Gray <norman@astro.gla.ac.uk>
 %%
-%%     This work consists of the file mn2e.bst
+%%     This work consists of the file mnras.bst
 
 %%  This file is maintained on Github: https://github.com/timj/mn2e-bst/
 %%-
@@ -1830,13 +1833,25 @@ FUNCTION {begin.bib}
   if$
   "\begin{thebibliography}{}" write$ newline$ % no labels in apalike
   "\makeatletter" write$ newline$
-  % The following is the contents of mn2e-insert.sty, minus comments and whitespace.
+  % The following is the contents of mnras-insert.sty, minus comments and whitespace.
   % DO NOT EDIT THIS TEXT,
+<<<<<<< HEAD:mn2e.bst
   % but instead make mn2e-insert.txt, and paste the results in here.
   "\relax" write$ newline$
   "\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
   "\def\mn@doi{\begingroup\mn@urlcharsother \@ifnextchar [ {\mn@doi@} {\mn@doi@[]}}" write$ newline$
   "\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty \href {http://dx.doi.org/#2} {doi:#2}\else \href {http://dx.doi.org/#2} {#1}\fi \endgroup}" write$ newline$
+=======
+  % but instead make mnras-insert.txt, and paste the results in here.
+"\relax" write$ newline$
+"\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}" write$ newline$
+"\def\mn@doi{\begingroup\mn@urlcharsother \@ifnextchar [ {\mn@doi@} {\mn@doi@[]}}" write$ newline$
+"\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty \href {http://dx.doi.org/#2} {doi:#2}\else \href {http://dx.doi.org/#2} {#1}\fi \endgroup}" write$ newline$
+"\def\mn@eprint#1#2{\mn@eprint@#1:#2::\@nil}" write$ newline$
+"\def\mn@eprint@arXiv#1{\href {http://arxiv.org/abs/#1} {{\tt arXiv:#1}}}" write$ newline$
+"\def\mn@eprint@dblp#1{\href {http://dblp.uni-trier.de/rec/bibtex/#1.xml} {dblp:#1}}" write$ newline$
+"\def\mn@eprint@#1:#2:#3:#4\@nil{\def\@tempa {#1}\def\@tempb {#2}\def\@tempc {#3}\ifx \@tempc \@empty \let \@tempc \@tempb \let \@tempb \@tempa \fi \ifx \@tempb \@empty \def\@tempb {arXiv}\fi \@ifundefined {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}" write$ newline$
+>>>>>>> upstream/master:mnras.bst
 }
 
 EXECUTE {begin.bib}
