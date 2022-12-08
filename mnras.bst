@@ -1776,7 +1776,7 @@ REVERSE {reverse.pass}
 %
 % This is for the second sorting pass.
 FUNCTION {bib.sort.order}
-{ sort.label
+{ sort.label sortify
   "    "
   *
   year field.or.null sortify
